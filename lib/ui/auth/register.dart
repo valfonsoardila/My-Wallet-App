@@ -24,10 +24,10 @@ class Register extends StatelessWidget {
         body: Stack(children: [
           Container(
             padding: const EdgeInsets.only(left: 80, top: 30),
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: const [
                 Icon(Icons.person, color: Colors.lightGreen, size: 40),
                 SizedBox(height: 10),
                 Text(
@@ -58,7 +58,8 @@ class Register extends StatelessWidget {
                     ),
                     labelText: 'Nombre completo',
                     labelStyle: const TextStyle(color: Colors.white),
-                    prefixIcon: const Icon(Icons.supervised_user_circle, color: Colors.white),
+                    prefixIcon: const Icon(Icons.supervised_user_circle,
+                        color: Colors.white),
                   ),
                 ),
                 const SizedBox(

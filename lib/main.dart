@@ -12,9 +12,9 @@ void main() async {
           options: const FirebaseOptions(
               apiKey: "AIzaSyA_qwsJFmcIdOD3up9Hp7C2B5mBMzOUZEk",
               appId: "1:172745531701:android:a8fd67cdd7d1f1619eec7c",
-              messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+              messagingSenderId: "7672350998687376030",
               projectId: "mywallet-bcefd",
-              authDomain: "YOUR_AUTH_DOMAIN",
+              authDomain: "mywallet-bcefd.firebaseapp.com",
               storageBucket: "mywallet-bcefd.appspot.com"),
         )
       : await Firebase.initializeApp();

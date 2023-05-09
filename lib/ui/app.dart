@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_wallet/ui/home/principal.dart';
 
-import 'home/home.dart';
 import 'auth/restaurar.dart';
 import 'auth/login.dart';
 import 'auth/register.dart';
@@ -24,8 +23,7 @@ class App extends StatelessWidget {
         "/register": (context) => const Register(),
         "/restaurar": (context) => const Restaurar(),
         "/perfil": (context) => const Perfil(),
-        "/home": (context) => const Home(),
-        "/principal":(context)=> const Principal(),
+        "/principal": (context) => const Principal(),
       },
     );
   }
