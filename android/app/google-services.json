@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "227445508499",
+    "project_id": "movil2023g02",
+    "storage_bucket": "movil2023g02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227445508499:android:4706084a47c1d8470c4066",
+        "android_client_info": {
+          "package_name": "com.example.firebase_004"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227445508499-r83vg9b321fe988mrer61h65sh81c2k5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj8kBSFzPBKypVyKD_A9WOt4O-O3cudZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227445508499-r83vg9b321fe988mrer61h65sh81c2k5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
