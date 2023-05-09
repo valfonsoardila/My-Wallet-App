@@ -52,6 +52,7 @@ class _PerfilState extends State<Perfil> {
         title: const Text("Completar Perfil"),
       ),
       body: Container(
+        color: Colors.black,
         padding: const EdgeInsets.all(10.0),
         child: Center(
           child: ListView(
@@ -125,8 +126,6 @@ class _PerfilState extends State<Perfil> {
 
                   controlup.crearcatalogo(catalogo, _image);
                   //Peticiones.crearcatalogo(catalogo, _image);
-
-                  // Navigator.pop(context);
                 },
               ),
             ],

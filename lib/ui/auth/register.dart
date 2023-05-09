@@ -24,10 +24,10 @@ class Register extends StatelessWidget {
         body: Stack(children: [
           Container(
             padding: const EdgeInsets.only(left: 80, top: 30),
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(Icons.person, color: Colors.lightGreen, size: 40),
                 SizedBox(height: 10),
                 Text(

@@ -7,6 +7,9 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isHovered = false;
+    ControlUserAuth controlua = Get.find();
+    TextEditingController user = TextEditingController();
+    TextEditingController pass = TextEditingController();
     return Scaffold(
       body: Align(
         alignment: Alignment.topCenter,
@@ -92,7 +95,22 @@ class Login extends StatelessWidget {
                     });
                   },
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      controlua
+                          .ingresarUser(user.text, pass.text)
+                          .then((value) {
+                        if (controlua.userValido == null) {
+                          Get.snackbar("Usuarios", controlua.mensajesUser,
+                              duration: const Duration(seconds: 4),
+                              backgroundColor: Colors.amber);
+                        } else {
+                          Get.snackbar("Usuarios", controlua.mensajesUser,
+                              duration: const Duration(seconds: 4),
+                              backgroundColor: Colors.amber);
+                          Get.toNamed("/principal");
+                        }
+                      });
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
                           isHovered ? Colors.lightGreen : Colors.lightGreen,
@@ -102,7 +120,7 @@ class Login extends StatelessWidget {
                     ),
                     child: const Text(
                       'Iniciar sesión',
-                      style: TextStyle(color:Colors.black),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ),

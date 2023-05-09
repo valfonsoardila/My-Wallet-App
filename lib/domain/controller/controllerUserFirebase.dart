@@ -18,12 +18,21 @@ class ControlUserAuth extends GetxController {
     print(_response.value);
     await controlUser(_response.value);
   }
-
+  Future<void> recuperarPass(String email) async {
+    _response.value = await Peticioneslogin.recuperarContrasena(email);
+    print(_response.value);
+    await controlUser(_response.value);
+  }
+  Future<void> cerrarSesion() async {
+    _response.value = await Peticioneslogin.abandonarSesion();
+    print(_response.value);
+    await controlUser(_response.value);
+  }
   Future<void> controlUser(dynamic respuesta) async {
     if (respuesta == null) {
-      _mensaje.value = "No Se Completo la Consulta";
-    } else if (respuesta == "1" || respuesta == "2") {
-      _mensaje.value = "No Se Completo la Consulta";
+      _mensaje.value = "Error de Conexion";
+    } else if (respuesta == "Error de Conexion" || respuesta == "Usuario o Contraseña Incorrecta") {
+      _mensaje.value = "Usuario o Contraseña Incorrecta";
     } else {
       _mensaje.value = "Proceso Realizado Correctamente";
       _usuario.value = respuesta;

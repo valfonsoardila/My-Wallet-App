@@ -17,7 +17,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'My Wallet App',
       theme: ThemeData.dark(),
-      initialRoute: '/principal',
+      initialRoute: '/login',
       routes: {
         "/login": (context) => const Login(),
         "/register": (context) => const Register(),

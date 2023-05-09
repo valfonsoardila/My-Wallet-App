@@ -4,17 +4,11 @@ import 'package:get/get.dart';
 
 class Restaurar extends StatelessWidget {
   const Restaurar({super.key});
-  void _resetPassword() {
-    final TextEditingController emailController = TextEditingController();
-    // Lógica para enviar el enlace de restablecimiento de contraseña al correo electrónico
-    String email = emailController.text;
-    // Aquí puedes implementar la lógica para enviar el enlace de restablecimiento de contraseña
-    print('Enviar enlace de restablecimiento de contraseña a: $email');
-  }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
+    ControlUserAuth controlua = Get.find();
+  TextEditingController user = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -68,7 +62,19 @@ class Restaurar extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             ElevatedButton(
-              onPressed: _resetPassword,
+              onPressed: () {
+                controlua.recuperarPass(user.text).then((value) {
+                  if (controlua.userValido == null) {
+                    Get.snackbar("Usuarios", controlua.mensajesUser,
+                        duration: const Duration(seconds: 4),
+                        backgroundColor: Colors.amber);
+                  } else {
+                    Get.snackbar("Usuarios", controlua.mensajesUser,
+                        duration: const Duration(seconds: 4),
+                        backgroundColor: Colors.amber);
+                  }
+                });
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightGreen,
                 textStyle: const TextStyle(
