@@ -6,7 +6,7 @@ class Peticiones {
   static final fs.FirebaseStorage storage = fs.FirebaseStorage.instance;
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  static Future<void> crearcatalogo(Map<String, dynamic> catalogo, foto) async {
+  static Future<dynamic> crearcatalogo(Map<String, dynamic> catalogo, foto) async {
     print(catalogo['foto']);
 
     var url = '';

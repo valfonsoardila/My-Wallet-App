@@ -8,7 +8,7 @@ class Restaurar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ControlUserAuth controlua = Get.find();
-  TextEditingController user = TextEditingController();
+    TextEditingController user = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -46,6 +46,7 @@ class Restaurar extends StatelessWidget {
               ),
             ),
             TextFormField(
+              controller: user,
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -65,13 +66,15 @@ class Restaurar extends StatelessWidget {
               onPressed: () {
                 controlua.recuperarPass(user.text).then((value) {
                   if (controlua.userValido == null) {
-                    Get.snackbar("Usuarios", controlua.mensajesUser,
+                    Get.snackbar(
+                        "Este correo no existe", controlua.mensajesUser,
                         duration: const Duration(seconds: 4),
-                        backgroundColor: Colors.amber);
+                        backgroundColor: const Color.fromARGB(255, 73, 73, 73));
                   } else {
-                    Get.snackbar("Usuarios", controlua.mensajesUser,
+                    Get.snackbar("Se envio correctamente la recuperacion a tu Gmail",
+                        controlua.mensajesUser,
                         duration: const Duration(seconds: 4),
-                        backgroundColor: Colors.amber);
+                        backgroundColor: const Color.fromARGB(255, 73, 73, 73));
                   }
                 });
               },

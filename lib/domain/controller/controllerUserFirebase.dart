@@ -30,11 +30,11 @@ class ControlUserAuth extends GetxController {
   }
   Future<void> controlUser(dynamic respuesta) async {
     if (respuesta == null) {
-      _mensaje.value = "Error de Conexion";
-    } else if (respuesta == "Error de Conexion" || respuesta == "Usuario o Contraseña Incorrecta") {
-      _mensaje.value = "Usuario o Contraseña Incorrecta";
+      _mensaje.value = "Por favor intente de nuevo";
+    } else if (respuesta == "1" || respuesta == "2") {
+      _mensaje.value = "Por favor intente de nuevo";
     } else {
-      _mensaje.value = "Proceso Realizado Correctamente";
+      _mensaje.value = "Proceso exitoso";
       _usuario.value = respuesta;
     }
   }

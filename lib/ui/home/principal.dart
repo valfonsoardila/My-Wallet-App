@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:my_wallet/data/services/peticionesPerfilFirebase.dart';
 import 'package:my_wallet/domain/controller/controllerPerfilFirebase.dart';
+import 'package:my_wallet/domain/controller/controllerUserFirebase.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -30,6 +30,8 @@ class _PrincipalState extends State<Principal> {
 
   @override
   Widget build(BuildContext context) {
+    ControlUserPerfil controlua = Get.find();
+    ControlUserAuth controluser = Get.find();
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -134,6 +136,37 @@ class _PrincipalState extends State<Principal> {
                           ),
                           child: const Text(
                             'Guardar',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 36.0),
+                    Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            controluser.cerrarSesion();
+                            Get.snackbar("Se ha cerrado la sesion",
+                                controluser.mensajesUser,
+                                duration: const Duration(seconds: 4),
+                                backgroundColor:
+                                    const Color.fromARGB(255, 73, 73, 73));
+                            Get.toNamed("/login");
+                          },
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(120, 50),
+                            backgroundColor: Colors.lightGreen,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text(
+                            'Cerrar Sesión',
                             style: TextStyle(
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
@@ -420,6 +453,21 @@ class _VistaAjustesState extends State<VistaAjustes> {
                       'foto': ''
                     };
                     controlup.crearcatalogo(catalogo, _image);
+                    if (_image != null && catalogo != null) {
+                      controlup.crearcatalogo(catalogo, _image);
+                      Get.snackbar("Perfil Guardado Correctamente",
+                          controlup.mensajesPerfil,
+                          duration: const Duration(seconds: 4),
+                          backgroundColor:
+                              const Color.fromARGB(255, 73, 73, 73));
+                    } else {
+                      controlup.crearcatalogo(catalogo, null);
+                      Get.snackbar("No se pudo guardar el perfil",
+                          controlup.mensajesPerfil,
+                          duration: const Duration(seconds: 4),
+                          backgroundColor:
+                              const Color.fromARGB(255, 73, 73, 73));
+                    }
                     //Peticiones.crearcatalogo(catalogo, _image);
                   },
                   style: ElevatedButton.styleFrom(
@@ -429,7 +477,7 @@ class _VistaAjustesState extends State<VistaAjustes> {
                       borderRadius: BorderRadius.circular(32.0),
                     ),
                   ),
-                  child: const Text("Adicionar Activo"),
+                  child: const Text("Guardar"),
                 ),
               ],
             ),

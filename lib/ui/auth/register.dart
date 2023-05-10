@@ -12,7 +12,7 @@ class Register extends StatelessWidget {
     ControlUserAuth controlua = Get.find();
     TextEditingController nombre = TextEditingController();
     TextEditingController user = TextEditingController();
-    TextEditingController passw = TextEditingController();
+    TextEditingController pass = TextEditingController();
     return Container(
       color: Colors.black,
       child: Scaffold(
@@ -85,7 +85,7 @@ class Register extends StatelessWidget {
                   height: 30,
                 ),
                 TextFormField(
-                  controller: passw,
+                  controller: pass,
                   obscureText: true,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
@@ -122,16 +122,21 @@ class Register extends StatelessWidget {
                           color: Colors.white,
                           onPressed: () {
                             controlua
-                                .crearUser(user.text, passw.text)
+                                .crearUser(user.text, pass.text)
                                 .then((value) {
                               if (controlua.userValido == null) {
-                                Get.snackbar("Usuarios", controlua.mensajesUser,
+                                Get.snackbar(
+                                    "Error al registrar, Asegurate de que tu contraseña es mayor a 6 caracteres",
+                                    controlua.mensajesUser,
                                     duration: const Duration(seconds: 4),
-                                    backgroundColor: Colors.amber);
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 73, 73, 73));
                               } else {
-                                Get.snackbar("Usuarios", controlua.mensajesUser,
+                                Get.snackbar("¡Registrado Correctamente!",
+                                    controlua.mensajesUser,
                                     duration: const Duration(seconds: 4),
-                                    backgroundColor: Colors.amber);
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 73, 73, 73));
                               }
                             });
                           },
