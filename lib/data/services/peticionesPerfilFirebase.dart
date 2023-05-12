@@ -17,7 +17,7 @@ class Peticiones {
     print(url);
     catalogo['foto'] = url.toString();
 
-    await _db.collection('perfiles').doc().set(catalogo).catchError((e) {
+    await _db.collection('perfil').doc().set(catalogo).catchError((e) {
       print(e);
     });
     //return true;
@@ -25,7 +25,7 @@ class Peticiones {
 
   static Future<dynamic> cargarfoto(var foto, var idArt) async {
     final fs.Reference storageReference =
-        fs.FirebaseStorage.instance.ref().child("Perfiles");
+        fs.FirebaseStorage.instance.ref().child("Perfil");
 
     fs.TaskSnapshot taskSnapshot =
         await storageReference.child(idArt).putFile(foto);

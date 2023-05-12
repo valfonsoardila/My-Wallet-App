@@ -13,21 +13,30 @@ class ControlUserAuth extends GetxController {
     await controlUser(_response.value);
   }
 
-  Future<void> ingresarUser(String email, String pass) async {
+  Future<void> consultarUser() async {
+    _response.value = await Peticioneslogin.consultarUsuario();
+    print(_response.value);
+    await controlUser(_response.value);
+  }
+
+  Future<dynamic> ingresarUser(String email, String pass) async {
     _response.value = await Peticioneslogin.ingresarEmail(email, pass);
     print(_response.value);
     await controlUser(_response.value);
   }
+
   Future<void> recuperarPass(String email) async {
     _response.value = await Peticioneslogin.recuperarContrasena(email);
     print(_response.value);
     await controlUser(_response.value);
   }
+
   Future<void> cerrarSesion() async {
     _response.value = await Peticioneslogin.abandonarSesion();
     print(_response.value);
     await controlUser(_response.value);
   }
+
   Future<void> controlUser(dynamic respuesta) async {
     if (respuesta == null) {
       _mensaje.value = "Por favor intente de nuevo";

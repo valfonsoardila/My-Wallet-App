@@ -21,7 +21,7 @@ class ControlUserPerfil extends GetxController {
       _perfil.value = respuesta;
     }
   }
-
+  
   dynamic get estadoPerfil => _response.value;
   String get mensajesPerfil => _mensaje.value;
   UserCredential? get perfilValido => _perfil.value;
