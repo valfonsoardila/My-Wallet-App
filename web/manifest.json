@@ -1,6 +1,6 @@
 {
-    "name": "firebase_004",
-    "short_name": "firebase_004",
+    "name": "my_wallet_app",
+    "short_name": "my_wallet_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

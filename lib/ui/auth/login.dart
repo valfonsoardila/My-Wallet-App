@@ -1,4 +1,5 @@
-import 'package:my_wallet/domain/controller/controllerUserFirebase.dart';
+import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
+import 'package:my_wallet_app/ui/home/screens/principal.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -97,30 +98,54 @@ class _LoginState extends State<Login> {
                     const SizedBox(height: 40.0),
                     ElevatedButton(
                       onPressed: () {
-                        controlua
-                            .ingresarUser(user.text, pass.text)
-                            .then((value) {
-                          if(value!=null){
-                            
-                          }
-                          print(value);
-
-                          if (controlua.userValido == null) {
-                            Get.snackbar(
-                                "El usuario o contraseña no son correctos",
-                                controlua.mensajesUser,
-                                duration: const Duration(seconds: 4),
-                                backgroundColor:
-                                    const Color.fromARGB(255, 73, 73, 73));
-                          } else {
-                            Get.snackbar("Ha iniciado sesión correctamente",
-                                controlua.mensajesUser,
-                                duration: const Duration(seconds: 4),
-                                backgroundColor:
-                                    const Color.fromARGB(255, 73, 73, 73));
-                            Get.toNamed("/principal");
-                          }
-                        });
+                        //Proceso de validación de usuario
+                        controlua.estadoUser == null;
+                        controlua.userValido == null;
+                        if (user.text == "" && pass.text == "") {
+                          Get.snackbar(
+                              "No ha ingresado su correo electronico, ni su contraseña",
+                              "Por favor ingrese su correo y contraseña");
+                        } else if (user.text == "") {
+                          Get.snackbar("No ha ingresado su correo electronico",
+                              "Por favor ingrese su correo");
+                        } else if (pass.text == "") {
+                          Get.snackbar("No ha ingreado su contraseña",
+                              "por favor ingrese una contraseña");
+                        } else {
+                          controlua
+                              .ingresarUser(user.text, pass.text)
+                              .then((value) {
+                            if (controlua.userValido == null) {
+                              Get.snackbar(
+                                  "El usuario o contraseña no son correctos",
+                                  controlua.mensajesUser,
+                                  duration: const Duration(seconds: 4),
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 73, 73, 73));
+                            } else {
+                              if (controlua.estadoUser == null) {
+                                Get.snackbar(
+                                    "El usuario o contraseña no son correctos",
+                                    controlua.mensajesUser,
+                                    duration: const Duration(seconds: 4),
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 73, 73, 73));
+                              } else {
+                                if (controlua.estadoUser != null) {
+                                  // Get.snackbar("Ha iniciado sesión correctamente",
+                                  //     controlua.mensajesUser,
+                                  //     duration: const Duration(seconds: 4),
+                                  //     backgroundColor:
+                                  //         const Color.fromARGB(255, 73, 73, 73));
+                                  // controlua.userValido!.user?.uid;
+                                  String uid = controlua.userValido!.user!.uid;
+                                  Get.toNamed("/principal", arguments: uid);
+                                  // Get.to(Home(uid: uid));
+                                }
+                              }
+                            }
+                          });
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightGreen,

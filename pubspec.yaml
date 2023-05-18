@@ -1,4 +1,4 @@
-name: my_wallet
+name: my_wallet_app
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -41,12 +41,18 @@ dependencies:
   firebase_storage: ^11.1.1
   cloud_firestore: ^4.5.2
   image_picker: ^0.8.7+4
+  get_storage: ^2.1.1
   charts_flutter: ^0.12.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_launcher_icons: 
+flutter_icons:
+  android: 'launcher_icon'
+  ios: true
+  image_path: 'assets/icon/my_wallet.png'
+  adaptive_ico_background: 'assets/icon/my_wallet.png'
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

@@ -1,4 +1,4 @@
-import 'package:my_wallet/domain/controller/controllerUserFirebase.dart';
+import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -125,25 +125,63 @@ class Register extends StatelessWidget {
                           child: IconButton(
                             color: Colors.white,
                             onPressed: () {
-                              controlua
-                                  .crearUser(user.text, pass.text)
-                                  .then((value) {
-                                if (controlua.userValido == null) {
-                                  Get.snackbar(
-                                      "Error al registrar, Asegurate de que tu contraseña es mayor a 6 caracteres",
+                              if (nombre.text.isEmpty &&
+                                  user.text.isEmpty &&
+                                  pass.text.isEmpty) {
+                                Get.snackbar(
+                                    "Por favor llene todos los campos",
+                                    controlua.mensajesUser,
+                                    duration: const Duration(seconds: 4),
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 73, 73, 73));
+                              } else if (nombre.text.isEmpty) {
+                                Get.snackbar(
+                                      "Por favor llene el campo de nombre",
                                       controlua.mensajesUser,
                                       duration: const Duration(seconds: 4),
                                       backgroundColor: const Color.fromARGB(
                                           255, 73, 73, 73));
-                                } else {
-                                  Get.snackbar("¡Registrado Correctamente!",
-                                      controlua.mensajesUser,
-                                      duration: const Duration(seconds: 4),
-                                      backgroundColor: const Color.fromARGB(
-                                          255, 73, 73, 73));
-                                  Get.toNamed("/perfil");
-                                }
-                              });
+                              } else if(user.text.isEmpty){
+                                Get.snackbar(
+                                    "Por favor llene el campo de correo",
+                                    controlua.mensajesUser,
+                                    duration: const Duration(seconds: 4),
+                                    backgroundColor: const Color.fromARGB(
+                                        255, 73, 73, 73));
+
+                              }else if(pass.text.isEmpty){
+                                Get.snackbar(
+                                    "Por favor llene el campo de contraseña",
+                                    controlua.mensajesUser,
+                                    duration: const Duration(seconds: 4),
+                                    backgroundColor: const Color.fromARGB(
+                                        255, 73, 73, 73));
+                              }else {
+                                controlua
+                                    .crearUser(user.text, pass.text)
+                                    .then((value) {
+                                  if (controlua.userValido == null) {
+                                    Get.snackbar(
+                                        "Error al registrar, Asegurate de que tu contraseña es mayor a 6 caracteres",
+                                        controlua.mensajesUser,
+                                        duration: const Duration(seconds: 4),
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 73, 73, 73));
+                                  } else {
+                                    Get.snackbar("¡Registrado Correctamente!",
+                                        controlua.mensajesUser,
+                                        duration: const Duration(seconds: 4),
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 73, 73, 73));
+                                    String password = pass.text;
+                                    Get.toNamed("/perfil", arguments: [
+                                      nombre.text,
+                                      user.text,
+                                      password
+                                    ]);
+                                  }
+                                });
+                              }
                             },
                             icon: const Icon(Icons.arrow_forward),
                           ),

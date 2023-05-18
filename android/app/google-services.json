@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "227445508499",
-    "project_id": "movil2023g02",
-    "storage_bucket": "movil2023g02.appspot.com"
+    "project_number": "172745531701",
+    "project_id": "mywallet-bcefd",
+    "storage_bucket": "mywallet-bcefd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:227445508499:android:4706084a47c1d8470c4066",
+        "mobilesdk_app_id": "1:172745531701:android:a8fd67cdd7d1f1619eec7c",
         "android_client_info": {
-          "package_name": "com.example.firebase_004"
+          "package_name": "com.mywallet.upc"
         }
       },
       "oauth_client": [
         {
-          "client_id": "227445508499-r83vg9b321fe988mrer61h65sh81c2k5.apps.googleusercontent.com",
+          "client_id": "172745531701-bi3a59tfl3h9218uhbl1kjvooq007178.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBj8kBSFzPBKypVyKD_A9WOt4O-O3cudZw"
+          "current_key": "AIzaSyA_qwsJFmcIdOD3up9Hp7C2B5mBMzOUZEk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "227445508499-r83vg9b321fe988mrer61h65sh81c2k5.apps.googleusercontent.com",
+              "client_id": "172745531701-bi3a59tfl3h9218uhbl1kjvooq007178.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

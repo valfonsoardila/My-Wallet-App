@@ -1,4 +1,4 @@
-import 'package:my_wallet/data/services/peticionesUserFirebase.dart';
+import 'package:my_wallet_app/data/services/peticionesUserFirebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 

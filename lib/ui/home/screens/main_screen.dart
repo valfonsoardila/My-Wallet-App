@@ -1,46 +1,50 @@
 import 'package:flutter/material.dart';
 // import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:my_wallet/domain/controller/controllerPerfilFirebase.dart';
-import 'package:my_wallet/domain/controller/controllerUserFirebase.dart';
-import 'package:get/get.dart';
-import 'package:my_wallet/ui/home/widgets/vista_ajustes.dart';
-import 'package:my_wallet/ui/home/widgets/vista_gastos.dart';
-import 'package:my_wallet/ui/home/widgets/vista_panel.dart';
+import 'package:my_wallet_app/ui/home/widgets/vista_ajustes.dart';
+import 'package:my_wallet_app/ui/home/widgets/vista_gastos.dart';
+import 'package:my_wallet_app/ui/home/widgets/vista_inicial.dart';
 
-class Principal extends StatefulWidget {
-  const Principal({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<Principal> createState() => _PrincipalState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _PrincipalState extends State<Principal> {
+class _MainScreenState extends State<MainScreen> {
   double xOffset = 0;
   double yOffset = 0;
   bool isDrawerOpen = false;
   double montoInicial = 0;
   late TextEditingController _montoInicialController;
+  late FocusScopeNode _focusScopeNode;
   final List<Widget> _widgetOptions = <Widget>[
-    const VistaPanel(titulo: 'Home'),
-    const VistaGastos(titulo: 'AddMonto'),
+    VistaInicial(),
+    VistaGastos(),
     VistaAjustes(),
   ];
   @override
   void initState() {
     super.initState();
     _montoInicialController = TextEditingController();
+    _focusScopeNode = FocusScopeNode();
+  }
+
+  @override
+  void dispose() {
+    _focusScopeNode.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    ControlUserPerfil controlua = Get.find();
-    ControlUserAuth controluser = Get.find();
     return DefaultTabController(
       length: 3,
       child: AnimatedContainer(
         transform: Matrix4.translationValues(xOffset, yOffset, 0)
           ..scale(isDrawerOpen ? 0.85 : 1.00)
-          ..rotateZ(isDrawerOpen ? -50 : 0),
+          ..rotateZ(isDrawerOpen ? 0 : 0),
+        // ..rotateZ(isDrawerOpen ? -50 : 0),
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           color: Colors.black,
@@ -51,20 +55,24 @@ class _PrincipalState extends State<Principal> {
         child: Scaffold(
           endDrawer: Drawer(
               child: Container(
-                color: Colors.lightGreenAccent[700],
-                child: Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: Container(
-                      color: Colors.black,
-                      padding: const EdgeInsets.all(20.0),
-                      child: Center(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.only(bottom: 20.0),
-                            child: const Text(
-                              'MyWallet',
+            color: Colors.lightGreenAccent[700],
+            child: Padding(
+              padding: const EdgeInsets.all(0.5),
+              child: Container(
+                  color: Colors.black,
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: const Column(
+                          children: [
+                            Icon(Icons.point_of_sale,
+                                color: Colors.lightGreen, size: 50),
+                            Text(
+                              'Dinero Inicial',
                               style: TextStyle(
                                 fontSize: 24.0,
                                 fontWeight: FontWeight.bold,
@@ -72,123 +80,139 @@ class _PrincipalState extends State<Principal> {
                               ),
                               textAlign: TextAlign.center,
                             ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 5.0),
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: const Text(
+                          'Bienvenido a la aplicación de gestión de gastos, en esta aplicación podras llevar un control de tus gastos y ver en que gastas tu dinero',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.grey,
                           ),
-                          const SizedBox(height: 5.0),
-                          Container(
-                            padding: const EdgeInsets.only(bottom: 20.0),
-                            child: const Text(
-                              'Bienvenido a la aplicación de gestión de gastos, en esta aplicación podras llevar un control de tus gastos y ver en que gastas tu dinero',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[900],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.monetization_on,
+                                color: Colors.white),
+                            const SizedBox(width: 5.0),
+                            Text(
+                              "$montoInicial",
+                              style: const TextStyle(
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
                               textAlign: TextAlign.start,
                             ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[900],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.monetization_on,
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      const Text(
+                        'Monto Inicial',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      const SizedBox(height: 16.0),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: _montoInicialController,
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      color: Colors.lightGreen),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                ),
+                                labelText: 'Digita el Inicial',
+                                labelStyle:
+                                    const TextStyle(color: Colors.white),
+                                prefixIcon: const Icon(Icons.monetization_on,
                                     color: Colors.white),
-                                const SizedBox(width: 5.0),
-                                Text(
-                                  "$montoInicial",
-                                  style: const TextStyle(
-                                    fontSize: 24.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.start,
-                                ),
-                              ],
+                              ),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
-                          const SizedBox(height: 16.0),
-                          const Text(
-                            'Monto Inicial',
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          const SizedBox(height: 16.0),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  controller: _montoInicialController,
-                                  decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: Colors.lightGreen),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide:
-                                          const BorderSide(color: Colors.white),
-                                    ),
-                                    labelText: 'Digita el Inicial',
-                                    labelStyle:
-                                        const TextStyle(color: Colors.white),
-                                    prefixIcon: const Icon(Icons.monetization_on,
-                                        color: Colors.white),
-                                  ),
-                                  style: const TextStyle(color: Colors.white),
-                                ),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                montoInicial =
+                                    double.parse(_montoInicialController.text);
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(120, 50),
+                              backgroundColor: Colors.lightGreen,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              const SizedBox(width: 10),
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    montoInicial =
-                                        double.parse(_montoInicialController.text);
-                                  });
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  fixedSize: const Size(120, 50),
-                                  backgroundColor: Colors.lightGreen,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Guardar',
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                            ),
+                            child: const Text(
+                              'Guardar',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
-                            ],
+                            ),
                           ),
                         ],
-                      ))),
-                ),
-              )),
+                      ),
+                    ],
+                  ))),
+            ),
+          )),
           appBar: AppBar(
               leading: isDrawerOpen
                   ? GestureDetector(
-                      child: const Icon(Icons.arrow_back_ios),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage('https://mi-imagen.com'),
+                        radius: 14,
+                        child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white.withOpacity(0.5),
+                          ),
+                        ),
+                      ),
                       onTap: () {
                         setState(() {
                           xOffset = 0;
                           yOffset = 0;
                           isDrawerOpen = false;
+
                         });
                       },
                     )
                   : GestureDetector(
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         backgroundImage: NetworkImage('https://mi-imagen.com'),
                         radius: 14,
                       ),
                       onTap: () {
                         setState(() {
+                          FocusScope.of(context).unfocus(); // Cierra el teclado
                           xOffset = 290;
                           yOffset = 80;
                           isDrawerOpen = true;
@@ -211,18 +235,18 @@ class _PrincipalState extends State<Principal> {
                   icon: Icon(Icons.home),
                 ),
                 Tab(
-                  icon: Icon(Icons.add),
+                  icon: Icon(Icons.attach_money_sharp),
                 ),
                 Tab(
                   icon: Icon(Icons.settings),
                 ),
               ])),
-              body: Container(
-                color: Colors.black,
-                child: TabBarView(
-                  children: _widgetOptions,
-                  ),
-              ),
+          body: Container(
+            color: Colors.black,
+            child: TabBarView(
+              children: _widgetOptions,
+            ),
+          ),
         ),
       ),
     );
@@ -327,22 +351,22 @@ class NewPadding extends StatelessWidget {
 }
 // import 'package:flutter/material.dart';
 // // import 'package:charts_flutter/flutter.dart' as charts;
-// import 'package:my_wallet/domain/controller/controllerPerfilFirebase.dart';
-// import 'package:my_wallet/domain/controller/controllerUserFirebase.dart';
+// import 'package:my_wallet_app/domain/controller/controllerPerfilFirebase.dart';
+// import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
 // import 'package:get/get.dart';
-// import 'package:my_wallet/ui/home/widgets/vista_ajustes.dart';
-// import 'package:my_wallet/ui/home/widgets/vista_gastos.dart';
-// import 'package:my_wallet/ui/home/widgets/vista_panel.dart';
+// import 'package:my_wallet_app/ui/home/widgets/vista_ajustes.dart';
+// import 'package:my_wallet_app/ui/home/widgets/vista_gastos.dart';
+// import 'package:my_wallet_app/ui/home/widgets/vista_panel.dart';
 
-// //Widget principal de la aplicacion
-// class Principal extends StatefulWidget {
-//   const Principal({super.key});
+// //Widget MainScreen de la aplicacion
+// class MainScreen extends StatefulWidget {
+//   const MainScreen({super.key});
 
 //   @override
-//   State<Principal> createState() => _PrincipalState();
+//   State<MainScreen> createState() => _MainScreenState();
 // }
-//Clase que contiene el estado del widget principal
-// class _PrincipalState extends State<Principal> {
+//Clase que contiene el estado del widget MainScreen
+// class _MainScreenState extends State<MainScreen> {
 //   double montoInicial = 0;
 //   late TextEditingController _montoInicialController;
 //   final List<Widget> _widgetOptions = <Widget>[

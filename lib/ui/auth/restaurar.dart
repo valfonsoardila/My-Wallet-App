@@ -1,4 +1,4 @@
-import 'package:my_wallet/domain/controller/controllerUserFirebase.dart';
+import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -57,7 +57,8 @@ class Restaurar extends StatelessWidget {
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.lightGreen),
+                          borderSide:
+                              const BorderSide(color: Colors.lightGreen),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -65,28 +66,42 @@ class Restaurar extends StatelessWidget {
                         ),
                         labelText: 'Correo electrónico',
                         labelStyle: const TextStyle(color: Colors.white),
-                        prefixIcon: const Icon(Icons.email, color: Colors.white),
+                        prefixIcon:
+                            const Icon(Icons.email, color: Colors.white),
                       ),
                     ),
                     const SizedBox(height: 20.0),
                     ElevatedButton(
                       onPressed: () {
-                        controlua.recuperarPass(user.text).then((value) {
-                          if (controlua.userValido == null) {
-                            Get.snackbar(
-                                "Este correo no existe", controlua.mensajesUser,
+                        if (user.text.isNotEmpty) {
+                          controlua.recuperarPass(user.text).then((value){
+                            if(controlua.mensajesUser == "Proceso exitoso"){
+                              Get.snackbar(
+                                "Correo enviado",
+                                "Por favor revise su bandeja de entrada",
                                 duration: const Duration(seconds: 4),
                                 backgroundColor:
-                                    const Color.fromARGB(255, 73, 73, 73));
-                          } else {
-                            Get.snackbar(
-                                "Se envio correctamente la recuperacion a tu Gmail",
-                                controlua.mensajesUser,
+                                    const Color.fromARGB(255, 73, 73, 73)
+                              );
+                            }else{
+                              Get.snackbar(
+                                "No se pudo enviar el correo",
+                                "Por favor intente de nuevo",
                                 duration: const Duration(seconds: 4),
                                 backgroundColor:
-                                    const Color.fromARGB(255, 73, 73, 73));
-                          }
-                        });
+                                    const Color.fromARGB(255, 73, 73, 73)
+                              );
+                            }
+                          });
+                        }else{
+                          Get.snackbar(
+                           "No ha ingresado un correo",
+                              "Por favor intente de nuevo",
+                              duration: const Duration(seconds: 4),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 73, 73, 73)
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightGreen,

@@ -1,4 +1,4 @@
-package com.example.firebase_004
+package com.example.my_wallet_app
 
 import io.flutter.embedding.android.FlutterActivity
 
