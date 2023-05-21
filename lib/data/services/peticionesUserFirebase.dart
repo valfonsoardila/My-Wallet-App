@@ -8,7 +8,6 @@ class Peticioneslogin {
     try {
       UserCredential usuario = await auth.createUserWithEmailAndPassword(
           email: email, password: pass);
-      String onSucess = "funcion $usuario";
       return usuario;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

@@ -30,7 +30,7 @@ class _PrincipalState extends State<Principal> {
         body: Stack(
           children: [
             DrawerScreen(uid: uid),
-            MainScreen(),
+            MainScreen(uid: uid),
           ],
         ),
       ),

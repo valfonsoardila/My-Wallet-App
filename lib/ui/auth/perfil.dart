@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
-import 'package:my_wallet_app/domain/controller/controllerPerfilFirebase.dart';
+import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -42,6 +42,7 @@ class _PerfilState extends State<Perfil> {
       //_image = File(image!.path);
     });
   }
+
   _camara() async {
     XFile? image =
         await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
@@ -50,6 +51,7 @@ class _PerfilState extends State<Perfil> {
       // _image = File(image!.path);
     });
   }
+
   void initState() {
     super.initState();
     final args =
@@ -59,6 +61,7 @@ class _PerfilState extends State<Perfil> {
     controlUser.text = registroSesion[1];
     controlPass.text = registroSesion[2];
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -242,7 +245,7 @@ class _PerfilState extends State<Perfil> {
                     'foto': _image != null ? _image.path : null,
                     'correo': controlUser.text,
                     'password': controlPass.text,
-                    'estado':'activo',
+                    'estado': 'activo',
                     'nombre': controlNombre.text,
                     'genero': generoSeleccionado,
                     'profesion': controlProfesion.text,

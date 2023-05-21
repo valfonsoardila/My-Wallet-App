@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
-import 'package:my_wallet_app/domain/controller/controllerPerfilFirebase.dart';
+import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
@@ -36,7 +36,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Mientras se carga el perfil, puedes mostrar un indicador de carga, por ejemplo:
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(
+              color: Colors.lightGreen,
+            ),
+          );
         } else if (snapshot.hasError) {
           // Si ocurre un error al obtener el perfil, puedes mostrar un mensaje de error
           return Text('Error al obtener el perfil');
@@ -134,7 +138,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         //     duration: const Duration(seconds: 4),
                         //     backgroundColor:
                         //         const Color.fromARGB(255, 73, 73, 73));
-                        controlua.userValido == null && controlua.estadoUser == null
+                        controlua.userValido == null &&
+                                controlua.estadoUser == null
                             ? Get.offAllNamed("/home")
                             : Get.offAllNamed("/login");
                       });
@@ -150,8 +155,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         ),
                         Text(
                           'Log out',
-                          style:
-                              TextStyle(color: Colors.lightGreen.withOpacity(0.5)),
+                          style: TextStyle(
+                              color: Colors.lightGreen.withOpacity(0.5)),
                         ),
                       ],
                     ),

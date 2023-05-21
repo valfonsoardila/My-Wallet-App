@@ -1,4 +1,4 @@
-import 'package:my_wallet_app/domain/controller/controllerPerfilFirebase.dart';
+import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
 import 'package:my_wallet_app/ui/app.dart';
 import 'package:firebase_core/firebase_core.dart';

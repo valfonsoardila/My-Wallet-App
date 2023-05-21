@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_wallet_app/domain/controller/controllerPerfilFirebase.dart';
+import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -252,6 +252,7 @@ class _VistaAjustesState extends State<VistaAjustes> {
       ),
     );
   }
+
   //Opciones de camara y galeria
   void _opcioncamara(context) {
     showModalBottomSheet(
