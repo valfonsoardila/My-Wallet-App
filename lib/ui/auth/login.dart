@@ -1,5 +1,5 @@
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
-import 'package:my_wallet_app/ui/home/screens/principal.dart';
+import 'package:my_wallet_app/ui/home/principal.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

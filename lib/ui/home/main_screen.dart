@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:my_wallet_app/domain/controller/controllerDineroUser.dart';
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
 // import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:my_wallet_app/ui/home/widgets/vista_ajustes.dart';
-import 'package:my_wallet_app/ui/home/widgets/vista_gastos.dart';
-import 'package:my_wallet_app/ui/home/widgets/vista_inicial.dart';
+import 'package:my_wallet_app/ui/views/vista_ajustes.dart';
+import 'package:my_wallet_app/ui/views/vista_gastos.dart';
+import 'package:my_wallet_app/ui/views/vista_inicial.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -290,7 +290,7 @@ class _MainScreenState extends State<MainScreen> {
                             },
                           ),
                     title: const Text(
-                      'MyWallet',
+                      'Gestion de gastos',
                       style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,

@@ -1,7 +1,8 @@
+import 'package:my_wallet_app/ui/anim/intro_app.dart';
 import 'package:my_wallet_app/ui/auth/perfil.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_wallet_app/ui/home/screens/principal.dart';
+import 'package:my_wallet_app/ui/home/principal.dart';
 
 import 'auth/restaurar.dart';
 import 'auth/login.dart';
@@ -17,8 +18,9 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'My Wallet App',
       theme: ThemeData.dark(),
-      initialRoute: '/login',
+      initialRoute: '/',
       routes: {
+        "/": (context) => const Intro(),
         "/login": (context) => const Login(),
         "/register": (context) => const Register(),
         "/restaurar": (context) => const Restaurar(),

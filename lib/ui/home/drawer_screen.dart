@@ -161,38 +161,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ],
                     ),
                   ),
-                  // TextButton(
-                  //   onPressed: () {
-                  //     setState(() {
-                  //       controlua.cerrarSesion();
-                  //       // Get.snackbar(
-                  //       //     "Abandonaste la sesion", controlua.mensajesUser,
-                  //       //     duration: const Duration(seconds: 4),
-                  //       //     backgroundColor:
-                  //       //         const Color.fromARGB(255, 73, 73, 73));
-                  //       controlua.userValido == null &&
-                  //               controlua.estadoUser == null
-                  //           ? Get.offAllNamed("/home")
-                  //           : Get.offAllNamed("/login");
-                  //     });
-                  //   },
-                  //   child: Row(
-                  //     children: [
-                  //       Icon(
-                  //         Icons.cancel,
-                  //         color: Colors.lightGreen.withOpacity(0.5),
-                  //       ),
-                  //       const SizedBox(
-                  //         width: 10,
-                  //       ),
-                  //       Text(
-                  //         'Log out',
-                  //         style:
-                  //             TextStyle(color: Colors.lightGreen.withOpacity(0.5)),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),

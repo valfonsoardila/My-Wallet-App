@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_wallet_app/ui/home/widgets/drawer_screen.dart';
-import 'package:my_wallet_app/ui/home/screens/main_screen.dart';
+import 'package:my_wallet_app/ui/home/drawer_screen.dart';
+import 'package:my_wallet_app/ui/home/main_screen.dart';
 
 class Principal extends StatefulWidget {
   final String uid;
-
   const Principal({super.key, this.uid = ''});
-
   @override
   State<Principal> createState() => _PrincipalState();
 }
