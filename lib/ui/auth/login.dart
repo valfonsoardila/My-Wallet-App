@@ -1,10 +1,9 @@
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
-import 'package:my_wallet_app/ui/home/principal.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key});
+  Login({Key? key});
 
   @override
   _LoginState createState() => _LoginState();
@@ -26,7 +25,7 @@ class _LoginState extends State<Login> {
           child: Stack(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                padding: EdgeInsets.symmetric(horizontal: 30.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -38,8 +37,8 @@ class _LoginState extends State<Login> {
                       height:
                           100, // Ajusta la altura de la imagen según tus necesidades
                     ),
-                    const SizedBox(height: 20.0),
-                    const Text(
+                    SizedBox(height: 20.0),
+                    Text(
                       'My Wallet',
                       style: TextStyle(
                         fontSize: 20.0,
@@ -48,8 +47,8 @@ class _LoginState extends State<Login> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 10.0),
-                    const Text(
+                    SizedBox(height: 10.0),
+                    Text(
                       'Iniciar sesión',
                       style: TextStyle(
                         fontSize: 24.0,
@@ -57,45 +56,42 @@ class _LoginState extends State<Login> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 40.0),
+                    SizedBox(height: 40.0),
                     TextFormField(
                       controller: user,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: Colors.lightGreen),
+                          borderSide: BorderSide(color: Colors.lightGreen),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Colors.white),
                         ),
                         labelText: 'Correo electrónico',
-                        labelStyle: const TextStyle(color: Colors.white),
-                        prefixIcon:
-                            const Icon(Icons.email, color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.white),
+                        prefixIcon: Icon(Icons.email, color: Colors.white),
                       ),
                     ),
-                    const SizedBox(height: 20.0),
+                    SizedBox(height: 20.0),
                     TextFormField(
                       controller: pass,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: Colors.lightGreen),
+                          borderSide: BorderSide(color: Colors.lightGreen),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Colors.white),
                         ),
                         labelText: 'Contraseña',
-                        labelStyle: const TextStyle(color: Colors.white),
-                        prefixIcon: const Icon(Icons.lock, color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.white),
+                        prefixIcon: Icon(Icons.lock, color: Colors.white),
                       ),
                       obscureText: true,
                     ),
-                    const SizedBox(height: 40.0),
+                    SizedBox(height: 40.0),
                     ElevatedButton(
                       onPressed: () {
                         //Proceso de validación de usuario
@@ -119,24 +115,24 @@ class _LoginState extends State<Login> {
                               Get.snackbar(
                                   "El usuario o contraseña no son correctos",
                                   controlua.mensajesUser,
-                                  duration: const Duration(seconds: 4),
+                                  duration: Duration(seconds: 4),
                                   backgroundColor:
-                                      const Color.fromARGB(255, 73, 73, 73));
+                                      Color.fromARGB(255, 73, 73, 73));
                             } else {
                               if (controlua.estadoUser == null) {
                                 Get.snackbar(
                                     "El usuario o contraseña no son correctos",
                                     controlua.mensajesUser,
-                                    duration: const Duration(seconds: 4),
+                                    duration: Duration(seconds: 4),
                                     backgroundColor:
-                                        const Color.fromARGB(255, 73, 73, 73));
+                                        Color.fromARGB(255, 73, 73, 73));
                               } else {
                                 if (controlua.estadoUser != null) {
                                   // Get.snackbar("Ha iniciado sesión correctamente",
                                   //     controlua.mensajesUser,
-                                  //     duration: const Duration(seconds: 4),
+                                  //     duration:  Duration(seconds: 4),
                                   //     backgroundColor:
-                                  //         const Color.fromARGB(255, 73, 73, 73));
+                                  //          Color.fromARGB(255, 73, 73, 73));
                                   // controlua.userValido!.user?.uid;
                                   String uid = controlua.userValido!.user!.uid;
                                   Get.toNamed("/principal", arguments: uid);
@@ -149,16 +145,16 @@ class _LoginState extends State<Login> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightGreen,
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontSize: 16.0,
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Iniciar sesión',
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 40,
                     ),
                     Row(
@@ -168,7 +164,7 @@ class _LoginState extends State<Login> {
                             onPressed: () {
                               Get.toNamed("/register");
                             },
-                            child: const Text(
+                            child: Text(
                               'Registrarse',
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
@@ -181,7 +177,7 @@ class _LoginState extends State<Login> {
                             onPressed: () {
                               Get.toNamed("/restaurar");
                             },
-                            child: const Text(
+                            child: Text(
                               'Restaurar contraseña',
                               style: TextStyle(
                                 decoration: TextDecoration.underline,

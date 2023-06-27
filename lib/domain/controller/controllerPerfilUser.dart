@@ -9,7 +9,7 @@ class ControlUserPerfil extends GetxController {
   final Rxn<UserCredential> _perfil = Rxn<UserCredential>();
 
   Future<void> crearcatalogo(Map<String, dynamic> catalogo, foto) async {
-   try {
+    try {
       _response.value = await Peticiones.crearcatalogo(catalogo, foto);
       await controlPerfil(_response.value);
     } catch (error) {
@@ -17,8 +17,8 @@ class ControlUserPerfil extends GetxController {
       await Future.delayed(Duration(seconds: 2)); // Esperar 2 segundos
       await crearcatalogo(catalogo, foto); // Reintentar el registro
     }
-  //  _response.value = await Peticiones.crearcatalogo(catalogo, foto);
-  //   await controlPerfil(_response.value);
+    //  _response.value = await Peticiones.crearcatalogo(catalogo, foto);
+    //   await controlPerfil(_response.value);
   }
 
   Future<void> actualizarcatalogo(Map<String, dynamic> catalogo, foto) async {
@@ -32,8 +32,10 @@ class ControlUserPerfil extends GetxController {
   }
 
   Future<Map<String, dynamic>> obtenercatalogo(String id) async {
+    print("llego al controlador");
     _response.value = await Peticiones.obtenercatalogo(id);
     await controlPerfil(_response.value);
+    print('esto fue lo que llego al controlador: ${_response.value}');
     return _response.value;
   }
 
@@ -54,7 +56,7 @@ class ControlUserPerfil extends GetxController {
     }
   }
 
-  List<Map<String, dynamic>> get datosPerfil => _Datos.value;
+  Map<String, dynamic> get datosPerfil => _Datos.value;
   dynamic get estadoPerfil => _response.value;
   String get mensajesPerfil => _mensaje.value;
   UserCredential? get perfilValido => _perfil.value;

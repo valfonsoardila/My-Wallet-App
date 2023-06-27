@@ -20,6 +20,7 @@ class Peticiones {
   }
 
   static Future<dynamic> obtenerMonto(String idUser) async {
+    List<Map<String, dynamic>> lista = [];
     try {
       final QuerySnapshot result =
           await _db.collection('dinero').where('id', isEqualTo: idUser).get();
@@ -27,7 +28,10 @@ class Peticiones {
       if (documents.length == 0) {
         return null;
       } else {
-        return documents[0].data();
+        for (var doc in documents) {
+          lista.add(doc.data() as Map<String, dynamic>);
+        }
+        return lista[0]['dineroInicial'];
       }
     } catch (error) {
       print('Error en la operación de obtener dinero: $error');

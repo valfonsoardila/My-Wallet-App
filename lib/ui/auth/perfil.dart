@@ -212,22 +212,40 @@ class _PerfilState extends State<Perfil> {
                 ),
               ),
               const SizedBox(height: 8.0),
-              DropdownButton(
-                hint: const Text(
-                  'Genero',
-                  style: TextStyle(color: Colors.white),
+              DropdownButtonFormField<String>(
+                dropdownColor: Color.fromARGB(255, 29, 29, 29),
+                icon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.white,
                 ),
-                dropdownColor: Colors.lightGreen,
-                icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
                 iconSize: 36,
-                isExpanded: true,
-                underline: const SizedBox(),
-                style: const TextStyle(color: Colors.white),
-                value: 'Masculino',
+                decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.lightGreen),
+                  ),
+                ),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                value: generoSeleccionado,
                 onChanged: (newValue) {
                   setState(() {
-                    generoSeleccionado =
-                        newValue.toString(); // Actualiza el valor seleccionado
+                    generoSeleccionado = newValue!;
                   });
                 },
                 items: generos.map((valueItem) {
@@ -276,7 +294,7 @@ class _PerfilState extends State<Perfil> {
                     borderRadius: BorderRadius.circular(32.0),
                   ),
                 ),
-                child: const Text("Crear mi perfil"),
+                child: Text("Crear mi perfil"),
               ),
             ],
           ),

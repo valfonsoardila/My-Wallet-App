@@ -6,7 +6,24 @@ import 'package:get/get.dart';
 
 class DrawerScreen extends StatefulWidget {
   final String uid;
-  const DrawerScreen({Key? key, this.uid = ''}) : super(key: key);
+  final String correo;
+  final String nombre;
+  final String profesion;
+  final String ciudad;
+  final String direccion;
+  final String celular;
+  final String foto;
+  DrawerScreen({
+    Key? key,
+    required this.uid,
+    required this.correo,
+    required this.nombre,
+    required this.profesion,
+    required this.ciudad,
+    required this.direccion,
+    required this.celular,
+    required this.foto,
+  }) : super(key: key);
   @override
   _DrawerScreenState createState() => _DrawerScreenState();
 }
@@ -21,152 +38,129 @@ class _DrawerScreenState extends State<DrawerScreen> {
   var direccion = "";
   var celular = "";
   var foto = "";
-
   var uid = '';
   @override
   void initState() {
     super.initState();
     uid = widget.uid;
+    correo = widget.correo;
+    nombre = widget.nombre;
+    profesion = widget.profesion;
+    ciudad = widget.ciudad;
+    direccion = widget.direccion;
+    celular = widget.celular;
+    foto = widget.foto;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
-      future: controlPerfil.obtenercatalogo(uid),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // Mientras se carga el perfil, puedes mostrar un indicador de carga, por ejemplo:
-          return Center(
-            child: CircularProgressIndicator(
-              color: Colors.lightGreen,
+    return Container(
+      color: Colors.grey[900],
+      child: Padding(
+        padding: EdgeInsets.only(top: 50, left: 40, bottom: 70),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Image.asset(
+                  'assets/images/my_wallet.png',
+                  width:
+                      30, // Ajusta el ancho de la imagen según tus necesidades
+                  height:
+                      30, // Ajusta la altura de la imagen según tus necesidades
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  'MyWallet APP',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-          );
-        } else if (snapshot.hasError) {
-          // Si ocurre un error al obtener el perfil, puedes mostrar un mensaje de error
-          return Text('Error al obtener el perfil');
-        } else {
-          final datosPerfil =
-              snapshot.data ?? {}; // Obtener los datos del perfil del snapshot
-          // Asignar los valores a las variables correspondientes
-          correo = datosPerfil['correo'] ?? "";
-          nombre = datosPerfil['nombre'] ?? "";
-          profesion = datosPerfil['profesion'] ?? "";
-          ciudad = datosPerfil['ciudad'] ?? "";
-          direccion = datosPerfil['direccion'] ?? "";
-          celular = datosPerfil['celular'] ?? "";
-          foto = datosPerfil['foto'] ?? "";
-          return Container(
-            color: Colors.grey[900],
-            child: Padding(
-              padding: const EdgeInsets.only(top: 50, left: 40, bottom: 70),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/images/my_wallet.png',
-                        width:
-                            30, // Ajusta el ancho de la imagen según tus necesidades
-                        height:
-                            30, // Ajusta la altura de la imagen según tus necesidades
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        'MyWallet APP',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
+            NewImage(img: foto, text: ''),
+            NewRow(
+              textOne: 'Coreo electronico',
+              icon: Icons.person_pin_rounded,
+              textTwo: correo,
+            ),
+            NewRow(
+              textOne: 'Nombre de usuario',
+              icon: Icons.person_outline,
+              textTwo: nombre,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            NewRow(
+              textOne: 'Profesion',
+              icon: Icons.work_outline,
+              textTwo: profesion,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            NewRow(
+              textOne: 'Ciudad',
+              icon: Icons.location_on_outlined,
+              textTwo: ciudad,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            NewRow(
+              textOne: 'Direccion',
+              icon: Icons.home_outlined,
+              textTwo: direccion,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            NewRow(
+              textOne: 'Celular',
+              icon: Icons.phone_outlined,
+              textTwo: celular,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  controlua.cerrarSesion();
+                  // Get.snackbar(
+                  //     "Abandonaste la sesion", controlua.mensajesUser,
+                  //     duration:  Duration(seconds: 4),
+                  //     backgroundColor:
+                  //          Color.fromARGB(255, 73, 73, 73));
+                  controlua.userValido == null && controlua.estadoUser == null
+                      ? Get.offAllNamed("/home")
+                      : Get.offAllNamed("/login");
+                });
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.cancel,
+                    color: Colors.lightGreen.withOpacity(0.5),
                   ),
-                  NewImage(img: foto, text: ''),
-                  NewRow(
-                    textOne: 'Coreo electronico',
-                    icon: Icons.person_pin_rounded,
-                    textTwo: correo,
+                  SizedBox(
+                    width: 10,
                   ),
-                  NewRow(
-                    textOne: 'Nombre de usuario',
-                    icon: Icons.person_outline,
-                    textTwo: nombre,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  NewRow(
-                    textOne: 'Profesion',
-                    icon: Icons.work_outline,
-                    textTwo: profesion,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  NewRow(
-                    textOne: 'Ciudad',
-                    icon: Icons.location_on_outlined,
-                    textTwo: ciudad,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  NewRow(
-                    textOne: 'Direccion',
-                    icon: Icons.home_outlined,
-                    textTwo: direccion,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  NewRow(
-                    textOne: 'Celular',
-                    icon: Icons.phone_outlined,
-                    textTwo: celular,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        controlua.cerrarSesion();
-                        // Get.snackbar(
-                        //     "Abandonaste la sesion", controlua.mensajesUser,
-                        //     duration: const Duration(seconds: 4),
-                        //     backgroundColor:
-                        //         const Color.fromARGB(255, 73, 73, 73));
-                        controlua.userValido == null &&
-                                controlua.estadoUser == null
-                            ? Get.offAllNamed("/home")
-                            : Get.offAllNamed("/login");
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.cancel,
-                          color: Colors.lightGreen.withOpacity(0.5),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Log out',
-                          style: TextStyle(
-                              color: Colors.lightGreen.withOpacity(0.5)),
-                        ),
-                      ],
-                    ),
+                  Text(
+                    'Log out',
+                    style: TextStyle(color: Colors.lightGreen.withOpacity(0.5)),
                   ),
                 ],
               ),
             ),
-          );
-        }
-      },
+          ],
+        ),
+      ),
     );
   }
 }
@@ -176,7 +170,7 @@ class NewRow extends StatelessWidget {
   final String textOne;
   final String textTwo;
 
-  const NewRow({
+  NewRow({
     Key? key,
     required this.icon,
     required this.textOne,
@@ -187,19 +181,17 @@ class NewRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextButton(
-              onPressed: () {
-                // Lógica a ejecutar al presionar el botón
-              },
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    height: 50,
-                    child: Row(
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextButton(
+                onPressed: () {
+                  // Lógica a ejecutar al presionar el botón
+                },
+                child: Column(
+                  children: <Widget>[
+                    Row(
                       children: <Widget>[
                         Align(
                           alignment: Alignment.centerLeft,
@@ -208,7 +200,7 @@ class NewRow extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 20,
                         ),
                         Column(
@@ -216,23 +208,27 @@ class NewRow extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               textOne,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 14),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
                             ),
                             Text(
                               textTwo,
-                              style: const TextStyle(
-                                  color: Colors.lightGreenAccent, fontSize: 16),
+                              style: TextStyle(
+                                color: Colors.lightGreenAccent,
+                                fontSize: 16,
+                              ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
@@ -240,10 +236,10 @@ class NewRow extends StatelessWidget {
 }
 
 class NewImage extends StatelessWidget {
-  final String img;
+  final dynamic img;
   final String text;
 
-  const NewImage({
+  NewImage({
     Key? key,
     required this.text,
     required this.img,
@@ -251,14 +247,27 @@ class NewImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget imageWidget;
+
+    if (img != null && Uri.parse(img).isAbsolute) {
+      // Si img es una URL válida, carga la imagen desde la URL
+      imageWidget = CircleAvatar(
+        radius: 30,
+        backgroundImage: NetworkImage(img),
+      );
+    } else {
+      // Si img no es una URL válida, carga la imagen desde el recurso local
+      imageWidget = CircleAvatar(
+        radius: 30,
+        backgroundImage: AssetImage('assets/images/user.png'),
+      );
+    }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        CircleAvatar(
-          backgroundImage: AssetImage(img),
-          radius: 30,
-        ),
-        const SizedBox(
+        imageWidget,
+        SizedBox(
           width: 20,
         ),
       ],

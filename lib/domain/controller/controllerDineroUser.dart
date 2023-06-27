@@ -38,7 +38,7 @@ class ControlDineroUser extends GetxController {
     }
   }
 
-  Future<Map<String, dynamic>> leerDinero(String id) async {
+  Future<String> leerDinero(String id) async {
     _response.value = await Peticiones.obtenerMonto(id);
     await controlDinero(_response.value);
     return _response.value;
@@ -61,7 +61,7 @@ class ControlDineroUser extends GetxController {
     }
   }
 
-  List<Map<String, dynamic>> get datosDinero => _Datos.value;
+  dynamic get datosDinero => _Datos.value;
   dynamic get estadoDinero => _response.value;
   String get mensajesDinero => _mensaje.value;
   UserCredential? get dineroValido => _dinero.value;
