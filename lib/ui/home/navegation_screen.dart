@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:my_wallet_app/domain/controller/controllerDineroUser.dart';
 import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
@@ -9,11 +10,13 @@ import 'package:my_wallet_app/ui/views/vista_grafica.dart';
 import 'package:my_wallet_app/ui/views/vista_inicial.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'dart:async';
 
 class NavegationScreen extends StatefulWidget {
   final String uid;
   final String foto;
   final String dinero;
+
   NavegationScreen(
       {Key? key, required this.uid, required this.foto, required this.dinero})
       : super(key: key);
@@ -22,6 +25,7 @@ class NavegationScreen extends StatefulWidget {
 }
 
 class _NavegationScreenState extends State<NavegationScreen> {
+  final theme = GetStorage();
   //VARIABLE GLOBAL KEY
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   //CONTROLADORES
@@ -46,9 +50,25 @@ class _NavegationScreenState extends State<NavegationScreen> {
   //LISTAS
   List<int> _selectedIndexList = [0, 1, 2, 3];
 
+  void verificadorDeCambios() {
+    Timer.periodic(Duration(microseconds: 1), (timer) {
+      setState(() {
+        isDarkMode = theme.read('theme') ?? false;
+      });
+    });
+  }
+
+  void consultarTema() {
+    setState(() {
+      isDarkMode = theme.read('theme') ?? false;
+    });
+    verificadorDeCambios();
+  }
+
   @override
   void initState() {
     super.initState();
+    consultarTema();
     _montoInicialController = TextEditingController();
     _focusScopeNode = FocusScopeNode();
     uid = widget.uid;
@@ -73,6 +93,14 @@ class _NavegationScreenState extends State<NavegationScreen> {
     final DateFormat timeFormat = DateFormat('HH:mm:ss');
     String formattedDate = dateFormat.format(now);
     String formattedTime = timeFormat.format(now);
+    Color _getBackgroundColor(bool isDarkMode) {
+      return isDarkMode ? Colors.black : Colors.white;
+    }
+
+    Color _getButtonBackgroundColor(bool isDarkMode) {
+      return isDarkMode ? Colors.white : Colors.lightGreen;
+    }
+
     //Animacion para el menu
     return AnimatedContainer(
       transform: Matrix4.translationValues(xOffset, yOffset, 0)
@@ -236,7 +264,6 @@ class _NavegationScreenState extends State<NavegationScreen> {
                   ))),
             ),
           )),
-
           //Estilos para el panel de navegacion inferior de la aplicacion
           bottomNavigationBar: CurvedNavigationBar(
             key: _bottomNavigationKey,
@@ -249,14 +276,14 @@ class _NavegationScreenState extends State<NavegationScreen> {
               Icon(Icons.settings, size: 30),
             ],
             color: Colors.lightGreen,
-            buttonBackgroundColor:
-                isDarkMode ? Colors.black : Colors.lightGreen,
-            backgroundColor: isDarkMode ? Colors.white : Colors.black,
+            buttonBackgroundColor: _getButtonBackgroundColor(isDarkMode),
+            backgroundColor: _getBackgroundColor(isDarkMode),
             animationCurve: Curves.easeInOut,
             animationDuration: Duration(milliseconds: 600),
             onTap: (index) {
               setState(() {
                 _page = index;
+                isDarkMode = theme.read('theme') ?? false;
               });
             },
             letIndexChange: (index) => true,

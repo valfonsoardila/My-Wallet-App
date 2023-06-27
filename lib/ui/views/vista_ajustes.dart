@@ -4,6 +4,7 @@ import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:my_wallet_app/ui/home/navegation_screen.dart';
 import 'dart:io';
 
 class VistaAjustes extends StatefulWidget {
@@ -668,6 +669,7 @@ class _VistaAjustes extends State<VistaAjustes> {
               onChanged: (value) {
                 setState(() {
                   isDarkMode = value;
+
                   theme.write('theme', value);
                 });
               },
