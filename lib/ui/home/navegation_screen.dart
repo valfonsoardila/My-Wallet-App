@@ -4,13 +4,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:my_wallet_app/domain/controller/controllerDineroUser.dart';
 import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
+import 'package:my_wallet_app/ui/models/theme_model.dart';
 import 'package:my_wallet_app/ui/views/vista_ajustes.dart';
 import 'package:my_wallet_app/ui/views/vista_gastos.dart';
 import 'package:my_wallet_app/ui/views/vista_grafica.dart';
 import 'package:my_wallet_app/ui/views/vista_inicial.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'dart:async';
+import 'package:provider/provider.dart';
 
 class NavegationScreen extends StatefulWidget {
   final String uid;
@@ -35,7 +36,6 @@ class _NavegationScreenState extends State<NavegationScreen> {
   late TextEditingController _montoInicialController;
   //VARIABLES DE CONTROL
   int _page = 0;
-  bool isDarkMode = false;
   double tamano = 0.0;
   double xOffset = 0;
   double yOffset = 0;
@@ -50,25 +50,11 @@ class _NavegationScreenState extends State<NavegationScreen> {
   //LISTAS
   List<int> _selectedIndexList = [0, 1, 2, 3];
 
-  void verificadorDeCambios() {
-    Timer.periodic(Duration(microseconds: 1), (timer) {
-      setState(() {
-        isDarkMode = theme.read('theme') ?? false;
-      });
-    });
-  }
-
-  void consultarTema() {
-    setState(() {
-      isDarkMode = theme.read('theme') ?? false;
-    });
-    verificadorDeCambios();
-  }
+  bool _isDarkMode = false;
 
   @override
   void initState() {
     super.initState();
-    consultarTema();
     _montoInicialController = TextEditingController();
     _focusScopeNode = FocusScopeNode();
     uid = widget.uid;
@@ -93,14 +79,13 @@ class _NavegationScreenState extends State<NavegationScreen> {
     final DateFormat timeFormat = DateFormat('HH:mm:ss');
     String formattedDate = dateFormat.format(now);
     String formattedTime = timeFormat.format(now);
-    Color _getBackgroundColor(bool isDarkMode) {
-      return isDarkMode ? Colors.black : Colors.white;
+    final theme = Provider.of<ThemeChanger>(context);
+    var temaActual = theme.getTheme();
+    if (temaActual == ThemeData.dark()) {
+      _isDarkMode = true;
+    } else {
+      _isDarkMode = false;
     }
-
-    Color _getButtonBackgroundColor(bool isDarkMode) {
-      return isDarkMode ? Colors.white : Colors.lightGreen;
-    }
-
     //Animacion para el menu
     return AnimatedContainer(
       transform: Matrix4.translationValues(xOffset, yOffset, 0)
@@ -118,11 +103,11 @@ class _NavegationScreenState extends State<NavegationScreen> {
           //vista del panel lateral
           endDrawer: Drawer(
               child: Container(
-            color: Colors.lightGreenAccent[700],
+            color: _isDarkMode ? Colors.white : Colors.black87,
             child: Padding(
               padding: EdgeInsets.all(0.5),
               child: Container(
-                  color: isDarkMode ? Colors.black : Colors.white,
+                  color: _isDarkMode ? Colors.white : Colors.black87,
                   padding: EdgeInsets.all(20.0),
                   child: Center(
                       child: Column(
@@ -134,13 +119,17 @@ class _NavegationScreenState extends State<NavegationScreen> {
                           children: [
                             SizedBox(height: 15.0),
                             Icon(Icons.point_of_sale,
-                                color: Colors.lightGreen, size: 50),
+                                color: _isDarkMode
+                                    ? Colors.lightGreen
+                                    : Colors.white,
+                                size: 50),
                             Text(
                               'Dinero Inicial',
                               style: TextStyle(
                                 fontSize: 24.0,
                                 fontWeight: FontWeight.bold,
-                                color: isDarkMode ? Colors.white : Colors.black,
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -155,9 +144,9 @@ class _NavegationScreenState extends State<NavegationScreen> {
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.normal,
-                            color: isDarkMode ? Colors.grey : Colors.black,
+                            color: _isDarkMode ? Colors.grey : Colors.white,
                           ),
-                          textAlign: TextAlign.start,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       SizedBox(height: 16.0),
@@ -185,7 +174,10 @@ class _NavegationScreenState extends State<NavegationScreen> {
                       SizedBox(height: 16.0),
                       Text(
                         'Monto Inicial',
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: _isDarkMode ? Colors.black : Colors.white,
+                        ),
                       ),
                       SizedBox(height: 16.0),
                       Row(
@@ -201,14 +193,23 @@ class _NavegationScreenState extends State<NavegationScreen> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(color: Colors.white),
+                                  borderSide: BorderSide(
+                                      color: _isDarkMode
+                                          ? Colors.black
+                                          : Colors.white),
                                 ),
                                 labelText: 'Digita el Inicial',
-                                labelStyle: TextStyle(color: Colors.white),
+                                labelStyle: TextStyle(
+                                  color:
+                                      _isDarkMode ? Colors.black : Colors.white,
+                                ),
                                 prefixIcon: Icon(Icons.monetization_on,
                                     color: Colors.white),
                               ),
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
+                              ),
                             ),
                           ),
                           SizedBox(width: 10),
@@ -276,14 +277,14 @@ class _NavegationScreenState extends State<NavegationScreen> {
               Icon(Icons.settings, size: 30),
             ],
             color: Colors.lightGreen,
-            buttonBackgroundColor: _getButtonBackgroundColor(isDarkMode),
-            backgroundColor: _getBackgroundColor(isDarkMode),
+            buttonBackgroundColor:
+                _isDarkMode ? Colors.lightGreen : Colors.white,
+            backgroundColor: _isDarkMode ? Colors.white : Colors.black,
             animationCurve: Curves.easeInOut,
             animationDuration: Duration(milliseconds: 600),
             onTap: (index) {
               setState(() {
                 _page = index;
-                isDarkMode = theme.read('theme') ?? false;
               });
             },
             letIndexChange: (index) => true,
@@ -329,7 +330,7 @@ class _NavegationScreenState extends State<NavegationScreen> {
           ),
           //Estilos para el contenido de la aplicacion
           body: Container(
-            color: isDarkMode ? Colors.black : Colors.white,
+            color: _isDarkMode ? Colors.black : Colors.white,
             child: Center(
               child: _widgetOptions[_page],
             ),

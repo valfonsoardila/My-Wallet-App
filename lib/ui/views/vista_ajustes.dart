@@ -4,8 +4,10 @@ import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:my_wallet_app/ui/home/navegation_screen.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
+
+import 'package:my_wallet_app/ui/models/theme_model.dart';
 
 class VistaAjustes extends StatefulWidget {
   final bool theme;
@@ -38,7 +40,7 @@ class _VistaAjustes extends State<VistaAjustes> {
   //VARIABLES DE CONTROL
   bool _showPassword =
       false; // Variable para controlar si se muestra el texto oculto o no
-  bool isDarkMode = false;
+  bool _isDarkMode = false;
   double fontSize = 16.0;
   double tamano = 20.0;
   String generoSeleccionado = 'Masculino';
@@ -59,6 +61,7 @@ class _VistaAjustes extends State<VistaAjustes> {
     'Femenino',
     'Otro',
   ];
+
   //FUNCIONES
   _galeria() async {
     XFile? image =
@@ -76,19 +79,6 @@ class _VistaAjustes extends State<VistaAjustes> {
     setState(() {
       _image = (image != null) ? File(image.path) : null;
       // _image = File(image!.path);
-    });
-  }
-
-  //METODOS
-  void consultarTema() {
-    setState(() {
-      isDarkMode = theme.read('theme') ?? false;
-    });
-  }
-
-  void consultarTamanoLetra() {
-    setState(() {
-      tamano = sizeLetter.read('size') ?? 16.0;
     });
   }
 
@@ -147,21 +137,18 @@ class _VistaAjustes extends State<VistaAjustes> {
           width: 300, // Establece el ancho deseado
           height: 200, // Establece la altura deseada
           child: AlertDialog(
-            backgroundColor:
-                isDarkMode ? Color.fromARGB(255, 19, 18, 18) : Colors.white,
+            backgroundColor: _isDarkMode
+                ? Colors.grey[200]
+                : Color.fromARGB(255, 19, 18, 18),
             title: Text(
               'Datos de Perfil',
-              style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+              style:
+                  TextStyle(color: _isDarkMode ? Colors.black : Colors.white),
             ),
             content: Container(
-              color:
-                  isDarkMode ? Color.fromARGB(255, 19, 18, 18) : Colors.white,
               padding: EdgeInsets.all(10.0),
               child: SingleChildScrollView(
                 child: Container(
-                  color: isDarkMode
-                      ? Color.fromARGB(255, 19, 18, 18)
-                      : Colors.white,
                   padding: EdgeInsets.all(5.0),
                   //Agregar los campos necesarios
                   child: Center(
@@ -195,18 +182,13 @@ class _VistaAjustes extends State<VistaAjustes> {
                         Text(
                           'Datos de acceso',
                           style: TextStyle(
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 29, 29, 29)),
+                              color: _isDarkMode ? Colors.black : Colors.white),
                         ),
                         SizedBox(height: 12.0),
                         TextFormField(
                           controller: controlCorreo,
                           style: TextStyle(
-                            color: isDarkMode
-                                ? Colors.white
-                                : Color.fromARGB(255, 29, 29, 29),
-                          ),
+                              color: _isDarkMode ? Colors.black : Colors.white),
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -215,26 +197,24 @@ class _VistaAjustes extends State<VistaAjustes> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
-                                  color: isDarkMode
-                                      ? Colors.white
-                                      : Color.fromARGB(255, 29, 29, 29)),
+                                  color: _isDarkMode
+                                      ? Colors.black
+                                      : Colors.white),
                             ),
                             labelText: 'Correo electrónico',
                             labelStyle: TextStyle(
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 29, 29, 29),
+                              color: _isDarkMode ? Colors.black : Colors.white,
                             ),
-                            prefixIcon: Icon(Icons.email, color: Colors.white),
+                            prefixIcon: Icon(Icons.email,
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white),
                           ),
                         ),
                         SizedBox(height: 8.0),
                         TextFormField(
                           controller: controlPassword,
                           style: TextStyle(
-                            color: isDarkMode
-                                ? Colors.white
-                                : Color.fromARGB(255, 29, 29, 29),
+                            color: _isDarkMode ? Colors.black : Colors.white,
                           ),
                           obscureText: !_showPassword, // ¡Cambia aquí!
                           decoration: InputDecoration(
@@ -245,17 +225,18 @@ class _VistaAjustes extends State<VistaAjustes> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
-                                  color: isDarkMode
-                                      ? Colors.white
-                                      : Color.fromARGB(255, 29, 29, 29)),
+                                  color: _isDarkMode
+                                      ? Colors.black
+                                      : Colors.white),
                             ),
                             labelText: 'Contraseña',
                             labelStyle: TextStyle(
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 29, 29, 29),
+                              color: _isDarkMode ? Colors.black : Colors.white,
                             ),
-                            prefixIcon: Icon(Icons.lock, color: Colors.white),
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              color: _isDarkMode ? Colors.black : Colors.white,
+                            ),
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -282,17 +263,13 @@ class _VistaAjustes extends State<VistaAjustes> {
                         Text(
                           'Datos personales',
                           style: TextStyle(
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 29, 29, 29)),
+                              color: _isDarkMode ? Colors.black : Colors.white),
                         ),
                         SizedBox(height: 12.0),
                         TextFormField(
                           controller: controlNombre,
                           style: TextStyle(
-                            color: isDarkMode
-                                ? Colors.white
-                                : Color.fromARGB(255, 29, 29, 29),
+                            color: _isDarkMode ? Colors.black : Colors.white,
                           ),
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -302,31 +279,30 @@ class _VistaAjustes extends State<VistaAjustes> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
-                                  color: isDarkMode
-                                      ? Colors.white
-                                      : Color.fromARGB(255, 29, 29, 29)),
+                                  color: _isDarkMode
+                                      ? Colors.black
+                                      : Colors.white),
                             ),
                             labelText: 'Nombre',
                             labelStyle: TextStyle(
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 29, 29, 29),
+                              color: _isDarkMode ? Colors.black : Colors.white,
                             ),
-                            prefixIcon: Icon(Icons.accessibility_new,
-                                color:
-                                    isDarkMode ? Colors.white : Colors.black),
+                            prefixIcon: Icon(
+                              Icons.accessibility_new,
+                              color: _isDarkMode ? Colors.black : Colors.white,
+                            ),
                           ),
                         ),
                         SizedBox(height: 8.0),
                         DropdownButtonFormField<String>(
-                          dropdownColor: isDarkMode
-                              ? Color.fromARGB(255, 29, 29, 29)
-                              : Colors.white,
+                          dropdownColor: _isDarkMode
+                              ? Colors.grey[200]
+                              : Color.fromARGB(255, 29, 29, 29),
                           icon: Icon(
                             Icons.arrow_drop_down,
-                            color: isDarkMode
-                                ? Colors.white
-                                : Color.fromARGB(255, 29, 29, 29),
+                            color: _isDarkMode
+                                ? Color.fromARGB(255, 29, 29, 29)
+                                : Colors.white,
                           ),
                           iconSize: 36,
                           decoration: InputDecoration(
@@ -335,17 +311,16 @@ class _VistaAjustes extends State<VistaAjustes> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
-                                color: isDarkMode
-                                    ? Colors.white
-                                    : Color.fromARGB(255, 29, 29, 29),
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
-                                color: isDarkMode
-                                    ? Colors.white
-                                    : Color.fromARGB(255, 29, 29, 29),
+                                color: _isDarkMode
+                                    ? Color.fromARGB(255, 29, 29, 29)
+                                    : Colors.white,
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
@@ -354,9 +329,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                             ),
                           ),
                           style: TextStyle(
-                            color: isDarkMode
-                                ? Colors.white
-                                : Color.fromARGB(255, 29, 29, 29),
+                            color: _isDarkMode ? Colors.black : Colors.white,
                           ),
                           value: generoSeleccionado,
                           onChanged: (newValue) {
@@ -375,9 +348,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                         TextFormField(
                           controller: controlProfesion,
                           style: TextStyle(
-                            color: isDarkMode
-                                ? Colors.white
-                                : Color.fromARGB(255, 29, 29, 29),
+                            color: _isDarkMode ? Colors.black : Colors.white,
                           ),
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -387,28 +358,24 @@ class _VistaAjustes extends State<VistaAjustes> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
-                                  color: isDarkMode
-                                      ? Colors.white
-                                      : Color.fromARGB(255, 29, 29, 29)),
+                                  color: _isDarkMode
+                                      ? Colors.black
+                                      : Colors.white),
                             ),
                             labelText: 'Profesión',
                             labelStyle: TextStyle(
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 29, 29, 29),
+                              color: _isDarkMode ? Colors.black : Colors.white,
                             ),
                             prefixIcon: Icon(Icons.psychology_rounded,
                                 color:
-                                    isDarkMode ? Colors.white : Colors.black),
+                                    _isDarkMode ? Colors.black : Colors.white),
                           ),
                         ),
                         SizedBox(height: 8.0),
                         TextFormField(
                           controller: controlCiudad,
                           style: TextStyle(
-                            color: isDarkMode
-                                ? Colors.white
-                                : Color.fromARGB(255, 29, 29, 29),
+                            color: _isDarkMode ? Colors.black : Colors.white,
                           ),
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -418,20 +385,17 @@ class _VistaAjustes extends State<VistaAjustes> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
-                                  color: isDarkMode
-                                      ? Colors.white
-                                      : Color.fromARGB(255, 29, 29, 29)),
+                                  color: _isDarkMode
+                                      ? Colors.black
+                                      : Colors.white),
                             ),
                             labelText: 'Ciudad',
                             labelStyle: TextStyle(
-                                color: isDarkMode
-                                    ? Colors.white
-                                    : Color.fromARGB(255, 29, 29, 29)),
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white),
                             prefixIcon: Icon(
                               Icons.add_location,
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 29, 29, 29),
+                              color: _isDarkMode ? Colors.black : Colors.white,
                             ),
                           ),
                         ),
@@ -439,9 +403,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                         TextFormField(
                           controller: controlDireccion,
                           style: TextStyle(
-                            color: isDarkMode
-                                ? Colors.white
-                                : Color.fromARGB(255, 29, 29, 29),
+                            color: _isDarkMode ? Colors.black : Colors.white,
                           ),
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -451,20 +413,17 @@ class _VistaAjustes extends State<VistaAjustes> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
-                                  color: isDarkMode
-                                      ? Colors.white
-                                      : Color.fromARGB(255, 29, 29, 29)),
+                                  color: _isDarkMode
+                                      ? Colors.black
+                                      : Colors.white),
                             ),
                             labelText: 'Direccion',
                             labelStyle: TextStyle(
-                                color: isDarkMode
-                                    ? Colors.white
-                                    : Color.fromARGB(255, 29, 29, 29)),
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white),
                             prefixIcon: Icon(
                               Icons.add_home_work,
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 29, 29, 29),
+                              color: _isDarkMode ? Colors.black : Colors.white,
                             ),
                           ),
                         ),
@@ -472,9 +431,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                         TextFormField(
                           controller: controlCelular,
                           style: TextStyle(
-                            color: isDarkMode
-                                ? Colors.white
-                                : Color.fromARGB(255, 29, 29, 29),
+                            color: _isDarkMode ? Colors.black : Colors.white,
                           ),
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -484,19 +441,17 @@ class _VistaAjustes extends State<VistaAjustes> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
-                                  color: isDarkMode
-                                      ? Colors.white
-                                      : Color.fromARGB(255, 29, 29, 29)),
+                                  color: _isDarkMode
+                                      ? Colors.black
+                                      : Colors.white),
                             ),
                             labelText: 'Celular',
                             labelStyle: TextStyle(
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 29, 29, 29),
+                              color: _isDarkMode ? Colors.black : Colors.white,
                             ),
                             prefixIcon: Icon(Icons.phone_android,
                                 color:
-                                    isDarkMode ? Colors.white : Colors.black),
+                                    _isDarkMode ? Colors.black : Colors.white),
                           ),
                         ),
                         SizedBox(height: 8.0),
@@ -541,7 +496,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                 },
                 child: Text('Guardar',
                     style: TextStyle(
-                        color: isDarkMode ? Colors.lightGreen : Colors.black)),
+                        color: _isDarkMode ? Colors.black : Colors.lightGreen)),
               ),
               TextButton(
                 onPressed: () {
@@ -549,7 +504,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                 },
                 child: Text('Cancelar',
                     style: TextStyle(
-                        color: isDarkMode ? Colors.lightGreen : Colors.black)),
+                        color: _isDarkMode ? Colors.black : Colors.lightGreen)),
               ),
             ],
           ),
@@ -567,17 +522,18 @@ class _VistaAjustes extends State<VistaAjustes> {
             return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
-                backgroundColor:
-                    isDarkMode ? Color.fromARGB(255, 19, 18, 18) : Colors.white,
+                backgroundColor: _isDarkMode
+                    ? Color.fromARGB(255, 19, 18, 18)
+                    : Colors.white,
                 title: Text('Ajustar tamaño',
                     style: TextStyle(
-                        color: isDarkMode ? Colors.white : Colors.black)),
+                        color: _isDarkMode ? Colors.white : Colors.black)),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text('Tamaño actual: $tamano',
                         style: TextStyle(
-                            color: isDarkMode ? Colors.white : Colors.black)),
+                            color: _isDarkMode ? Colors.white : Colors.black)),
                     Slider(
                       value: tamano,
                       min: 0.0,
@@ -603,7 +559,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                     child: Text(
                       'Aceptar',
                       style: TextStyle(
-                        color: isDarkMode ? Colors.lightGreen : Colors.black,
+                        color: _isDarkMode ? Colors.lightGreen : Colors.black,
                       ),
                     ),
                   ),
@@ -614,7 +570,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                     child: Text(
                       'Cancelar',
                       style: TextStyle(
-                        color: isDarkMode ? Colors.lightGreen : Colors.black,
+                        color: _isDarkMode ? Colors.lightGreen : Colors.black,
                       ),
                     ),
                   ),
@@ -628,23 +584,28 @@ class _VistaAjustes extends State<VistaAjustes> {
   @override
   void initState() {
     super.initState();
-    consultarTema();
-    consultarTamanoLetra();
     uid = widget.uid;
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeChanger>(context);
+    var temaActual = theme.getTheme();
+    if (temaActual == ThemeData.dark()) {
+      _isDarkMode = true;
+    } else {
+      _isDarkMode = false;
+    }
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: _isDarkMode ? Colors.white : Colors.black,
       body: Column(
         children: [
           ListTile(
             leading: Icon(Icons.person,
-                color: isDarkMode ? Colors.grey : Colors.black),
+                color: _isDarkMode ? Colors.black : Colors.white),
             title: Text('Gestión de Perfil',
                 style: TextStyle(
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: _isDarkMode ? Colors.black : Colors.white,
                     fontSize: tamano)),
             onTap: () {
               // Lógica para gestionar el perfil del usuario
@@ -654,33 +615,39 @@ class _VistaAjustes extends State<VistaAjustes> {
           ),
           ListTile(
             leading: Icon(
-              isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
-              color: isDarkMode ? Colors.grey : Colors.black,
+              _isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
+              color: _isDarkMode ? Colors.black : Colors.white,
             ),
             title: Text(
-              isDarkMode ? 'Dark Mode' : 'Light Mode',
+              _isDarkMode ? 'Dark Mode' : 'Light Mode',
               style: TextStyle(
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: _isDarkMode ? Colors.black : Colors.white,
                 fontSize: tamano,
               ),
             ),
             trailing: Switch(
-              value: isDarkMode,
+              activeColor: Colors.lightGreen,
+              inactiveThumbColor: Colors.grey,
+              inactiveTrackColor: Colors.grey,
+              value: _isDarkMode,
               onChanged: (value) {
                 setState(() {
-                  isDarkMode = value;
-
-                  theme.write('theme', value);
+                  _isDarkMode = !_isDarkMode;
+                  if (_isDarkMode) {
+                    theme.setTheme(ThemeData.dark());
+                  } else {
+                    theme.setTheme(ThemeData.light());
+                  }
                 });
               },
             ),
           ),
           ListTile(
             leading: Icon(Icons.format_size,
-                color: isDarkMode ? Colors.grey : Colors.black),
+                color: _isDarkMode ? Colors.black : Colors.white),
             title: Text('Tamaño de Letra',
                 style: TextStyle(
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: _isDarkMode ? Colors.black : Colors.white,
                     fontSize: tamano)),
             onTap: () {
               setState(() {
@@ -707,14 +674,16 @@ class _VistaAjustes extends State<VistaAjustes> {
                               alignment: Alignment.centerLeft,
                               child: Icon(
                                 Icons.person,
-                                color: isDarkMode ? Colors.grey : Colors.black,
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
                                 size: 16,
                               ),
                             ),
                             Text(
                               'Desarrollador: ',
                               style: TextStyle(
-                                color: isDarkMode ? Colors.white : Colors.black,
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
                                 fontSize: 16,
                               ),
                             ),
@@ -730,7 +699,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                       ),
                       SizedBox(width: 8.0),
                       Container(
-                        width: 220,
+                        width: 235,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -738,16 +707,24 @@ class _VistaAjustes extends State<VistaAjustes> {
                               alignment: Alignment.centerLeft,
                               child: Icon(
                                 Icons.email,
-                                color: isDarkMode ? Colors.grey : Colors.black,
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
                                 size: 18,
                               ),
                             ),
                             Text(
-                              'correo_electronico',
+                              'Correo: ',
                               style: TextStyle(
-                                color: isDarkMode ? Colors.white : Colors.black,
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
                                 fontSize: 16,
                               ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                // Lógica para abrir el perfil de LinkedIn
+                              },
+                              child: Text('victoradila@gmail.com'),
                             ),
                           ],
                         ),
@@ -762,16 +739,25 @@ class _VistaAjustes extends State<VistaAjustes> {
                               alignment: Alignment.centerLeft,
                               child: Icon(
                                 Icons.phone,
-                                color: isDarkMode ? Colors.grey : Colors.black,
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
                                 size: 16,
                               ),
                             ),
                             Text(
-                              'número_de_teléfono',
+                              'Celular:',
                               style: TextStyle(
-                                color: isDarkMode ? Colors.white : Colors.black,
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
                                 fontSize: 16,
                               ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                // Lógica para abrir el perfil de LinkedIn
+                              },
+                              child: Text('+57 314 713 3334',
+                                  style: TextStyle(fontSize: 16)),
                             ),
                           ],
                         ),

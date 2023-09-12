@@ -6,9 +6,9 @@ import 'package:my_wallet_app/ui/home/drawer_screen.dart';
 import 'package:my_wallet_app/ui/home/navegation_screen.dart';
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
 import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
-// import 'package:my_wallet_app/ui/home/main_screen.dart';
+import 'package:my_wallet_app/ui/models/theme_model.dart';
+import 'package:provider/provider.dart';
 
-//CLASE PRINCIPAL
 class Principal extends StatefulWidget {
   final String uid;
   const Principal({super.key, this.uid = ''});
@@ -31,6 +31,8 @@ class _PrincipalState extends State<Principal> {
   var celular = "";
   var foto = "";
   var dinero = "";
+
+  bool _isDarkMode = false;
   //FUNCIONES
   @override
   void initState() {
@@ -42,12 +44,21 @@ class _PrincipalState extends State<Principal> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeChanger>(context);
+    var temaActual = theme.getTheme();
+    if (temaActual == ThemeData.dark()) {
+      _isDarkMode = true;
+    } else {
+      _isDarkMode = false;
+    }
     return FutureBuilder<Map<String, dynamic>>(
       future: controlPerfil.obtenercatalogo(uid),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Mientras se carga el perfil, puedes mostrar un indicador de carga, por ejemplo:
-          return Center(
+          return Container(
+            alignment: Alignment.center,
+            color: _isDarkMode ? Colors.white : Colors.black,
             child: CircularProgressIndicator(
               color: Colors.lightGreen,
             ),

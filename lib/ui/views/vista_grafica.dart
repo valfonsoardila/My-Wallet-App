@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:my_wallet_app/ui/models/theme_model.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:provider/provider.dart';
 
 class VistaGrafica extends StatefulWidget {
   final bool theme;
@@ -10,11 +12,10 @@ class VistaGrafica extends StatefulWidget {
 }
 
 class _VistaGraficaState extends State<VistaGrafica> {
-  //STORAGE
-  final theme = GetStorage();
-  final sizeLetter = GetStorage();
+  late List<dynamic> data;
+  late TooltipBehavior _tooltip;
   //VARIABLES DE CONTROL
-  bool isDarkMode = false;
+  bool _isDarkMode = false;
   double fontSize = 16.0;
   double tamano = 20.0;
   //LISTA DE CONSEJOS
@@ -30,41 +31,41 @@ class _VistaGraficaState extends State<VistaGrafica> {
     '9. Planifica tus compras y aprovecha las ofertas y descuentos.',
     '10. Establece metas de ahorro a corto y largo plazo.'
   ];
-  //METODOS
-  void consultarTema() {
-    setState(() {
-      isDarkMode = theme.read('theme') ?? false;
-    });
-  }
-
-  void consultarTamanoLetra() {
-    setState(() {
-      tamano = sizeLetter.read('size') ?? 16.0;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    consultarTema();
-    consultarTamanoLetra();
+    data = [
+      _ChartData('Gastos', 30),
+      _ChartData('Ahorros', 20),
+      _ChartData('Inversiones', 10),
+      _ChartData('Otros', 40),
+    ];
+    _tooltip = TooltipBehavior(enable: true);
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeChanger>(context);
+    var temaActual = theme.getTheme();
+    if (temaActual == ThemeData.dark()) {
+      _isDarkMode = true;
+    } else {
+      _isDarkMode = false;
+    }
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: _isDarkMode ? Colors.white : Colors.black,
       appBar: AppBar(
         title: Center(
           child: Text(
-            'Gráfica Gastos vs Ahorros',
+            'Seguimiento de Gastos',
             style: TextStyle(
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: _isDarkMode ? Colors.black : Colors.white,
             ),
             textAlign: TextAlign.center,
           ),
         ),
-        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        backgroundColor: _isDarkMode ? Colors.white : Colors.black87,
       ),
       body: Column(
         children: [
@@ -72,56 +73,52 @@ class _VistaGraficaState extends State<VistaGrafica> {
             child: Center(
               child: Container(
                 padding: EdgeInsets.all(4.0),
-                child: PieChart(
-                  PieChartData(
-                    sections: [
-                      PieChartSectionData(
-                        color: Colors.red,
-                        value: 40,
-                        title: '40%',
-                        radius: 50,
-                        titleStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: isDarkMode ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      PieChartSectionData(
-                        color: Colors.blue,
-                        value: 30,
-                        title: '30%',
-                        radius: 40,
-                        titleStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: isDarkMode ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      PieChartSectionData(
-                        color: Colors.green,
-                        value: 20,
-                        title: '20%',
-                        radius: 30,
-                        titleStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: isDarkMode ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      PieChartSectionData(
-                        color: Colors.yellow,
-                        value: 10,
-                        title: '10%',
-                        radius: 20,
-                        titleStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: isDarkMode ? Colors.white : Colors.black,
-                        ),
-                      ),
+                child: SfCircularChart(
+                    palette: <Color>[
+                      Colors.red,
+                      Colors.blue,
+                      Colors.green,
+                      Colors.yellow
                     ],
-                  ),
-                ),
+                    tooltipBehavior: _tooltip,
+                    legend: Legend(
+                      isVisible: true,
+                      overflowMode: LegendItemOverflowMode.wrap,
+                      textStyle: TextStyle(
+                        color: _isDarkMode ? Colors.black : Colors.white,
+                      ),
+                    ),
+                    selectionGesture: ActivationMode.singleTap,
+                    enableMultiSelection: true,
+                    title: ChartTitle(
+                      text: 'Gastos vs Ahorros',
+                      textStyle: TextStyle(
+                        color: _isDarkMode ? Colors.black : Colors.white,
+                        fontSize: fontSize,
+                      ),
+                    ),
+                    series: <CircularSeries>[
+                      DoughnutSeries<dynamic, String>(
+                          dataSource: data,
+                          xValueMapper: (dynamic data, _) => data.x,
+                          yValueMapper: (dynamic data, _) => data.y,
+                          dataLabelSettings: DataLabelSettings(
+                            isVisible: true,
+                            showCumulativeValues: true,
+                            showZeroValue: true,
+                            textStyle: TextStyle(
+                              color: _isDarkMode ? Colors.black : Colors.white,
+                              fontSize: 14,
+                            ),
+                            useSeriesColor: true,
+                            labelPosition: ChartDataLabelPosition.outside,
+                          ),
+                          enableTooltip: true,
+                          // Explode the segments on tap
+                          strokeColor: Colors.black,
+                          explode: true,
+                          explodeIndex: 1)
+                    ]),
               ),
             ),
           ),
@@ -147,7 +144,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                     Text(
                       'Gastos',
                       style: TextStyle(
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: _isDarkMode ? Colors.black : Colors.white,
                       ),
                     ),
                   ],
@@ -168,7 +165,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                     Text(
                       'Ahorros',
                       style: TextStyle(
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: _isDarkMode ? Colors.black : Colors.white,
                       ),
                     ),
                   ],
@@ -189,7 +186,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                     Text(
                       'Inversiones',
                       style: TextStyle(
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: _isDarkMode ? Colors.black : Colors.white,
                       ),
                     ),
                   ],
@@ -210,7 +207,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                     Text(
                       'Otros',
                       style: TextStyle(
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: _isDarkMode ? Colors.black : Colors.white,
                       ),
                     ),
                   ],
@@ -222,19 +219,25 @@ class _VistaGraficaState extends State<VistaGrafica> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                color: isDarkMode
-                    ? Colors.grey[900]
-                    : Color.fromARGB(255, 202, 200, 200),
+                decoration: BoxDecoration(
+                  color: _isDarkMode ? Colors.grey[200] : Colors.grey[900],
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: ListView.builder(
                   itemCount: consejos.length,
                   itemBuilder: (BuildContext context, int index) {
                     return ExpansionTile(
-                      iconColor: isDarkMode ? Colors.white : Colors.black,
+                      iconColor: _isDarkMode ? Colors.white70 : Colors.white,
+                      initiallyExpanded: false,
+                      trailing: Icon(
+                        Icons.arrow_drop_down,
+                        color: _isDarkMode ? Colors.black : Colors.white,
+                      ),
                       title: Text(
                         'Consejo ${index + 1}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: isDarkMode ? Colors.white : Colors.black,
+                          color: _isDarkMode ? Colors.black : Colors.white,
                         ),
                       ),
                       children: [
@@ -243,7 +246,8 @@ class _VistaGraficaState extends State<VistaGrafica> {
                           child: Text(
                             consejos[index],
                             style: TextStyle(
-                                color: isDarkMode ? Colors.white : Colors.black,
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
                                 fontSize: 14),
                           ),
                         ),
@@ -258,4 +262,11 @@ class _VistaGraficaState extends State<VistaGrafica> {
       ),
     );
   }
+}
+
+class _ChartData {
+  _ChartData(this.x, this.y);
+
+  final String x;
+  final double y;
 }
