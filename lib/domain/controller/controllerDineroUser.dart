@@ -29,6 +29,7 @@ class ControlDineroUser extends GetxController {
   }
 
   Future<void> eliminarDinero(Map<String, dynamic> dinero) async {
+    print("Se va a eliminar el dinero: $dinero");
     try {
       _response.value = await Peticiones.eliminarmonto(dinero);
       await controlDinero(_response.value);
@@ -38,8 +39,9 @@ class ControlDineroUser extends GetxController {
     }
   }
 
-  Future<String> leerDinero(String id) async {
+  Future<void> obtenerDinero(String id) async {
     _response.value = await Peticiones.obtenerMonto(id);
+    print("Se obtuvo el dinero: ${_response.value}");
     await controlDinero(_response.value);
     return _response.value;
   }

@@ -9,8 +9,7 @@ class Peticiones {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
   static final ControlUserAuth controlua = Get.find();
 
-  static Future<dynamic> crearcatalogo(
-      Map<String, dynamic> catalogo, foto) async {
+  static Future<dynamic> crearPerfil(Map<String, dynamic> Perfil, foto) async {
     try {
       var url = '';
       if (foto != null) {
@@ -18,11 +17,11 @@ class Peticiones {
             await Peticiones.cargarfoto(foto, controlua.userValido!.user!.uid);
       }
       print(url);
-      catalogo['foto'] = url.toString();
+      Perfil['foto'] = url.toString();
       await _db
           .collection('perfil')
-          .doc(catalogo['id'])
-          .set(catalogo)
+          .doc(Perfil['id'])
+          .set(Perfil)
           .catchError((e) {
         print(e);
         throw e; // Lanzar la excepción para que sea capturada en el controlador
@@ -32,51 +31,51 @@ class Peticiones {
       print('Error en la operación de creación de catálogo: $error');
       throw error; // Lanzar la excepción para que sea capturada en el controlador
     }
-    // print(catalogo['foto']);
+    // print(Perfil['foto']);
 
     // var url = '';
     // if (foto != null) {
     //   url = await Peticiones.cargarfoto(
-    //       foto, catalogo['nombre'] + catalogo['apellido']);
+    //       foto, Perfil['nombre'] + Perfil['apellido']);
     // }
     // print(url);
-    // catalogo['foto'] = url.toString();
-    // await _db.collection('perfil').doc().set(catalogo).catchError((e) {
+    // Perfil['foto'] = url.toString();
+    // await _db.collection('perfil').doc().set(Perfil).catchError((e) {
     //   print(e);
     // });
     // return true;
   }
 
-  static Future<dynamic> actualizarcatalogo(
-      Map<String, dynamic> catalogo, foto) async {
-    print('este es el catalogo: $catalogo');
+  static Future<dynamic> actualizarPerfil(
+      Map<String, dynamic> Perfil, foto) async {
+    print('este es el Perfil: $Perfil');
     var url = '';
     if (foto != null) {
       url = await Peticiones.cargarfoto(
-          foto, catalogo['nombre'] + catalogo['apellido']);
+          foto, Perfil['nombre'] + Perfil['apellido']);
     }
     print(url);
-    catalogo['foto'] = url.toString();
+    Perfil['foto'] = url.toString();
     await _db
         .collection('perfil')
         .doc(
-          catalogo['id'],
+          Perfil['id'],
         )
-        .update(catalogo)
+        .update(Perfil)
         .catchError((e) {
       print(e);
     });
     return true;
   }
 
-  static Future<dynamic> eliminarcatalogo(Map<String, dynamic> catalogo) async {
+  static Future<dynamic> eliminarPerfil(Map<String, dynamic> Perfil) async {
     await _db.collection('perfil').doc().delete().catchError((e) {
       print(e);
     });
     return true;
   }
 
-  static Future<Map<String, dynamic>> obtenercatalogo(id) async {
+  static Future<Map<String, dynamic>> obtenerPerfil(id) async {
     print("Hizo la peticion: $id");
     Map<String, dynamic> datos = {};
     final perfilSnapshot = await FirebaseFirestore.instance

@@ -479,7 +479,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                     'direccion': controlDireccion.text,
                     'celular': controlCelular.text,
                   };
-                  controlPerfil.actualizarcatalogo(catalogo, _image);
+                  controlPerfil.actualizarPerfil(catalogo, _image);
                   if (_image != null || _image == null) {
                     Get.snackbar("Perfil Guardado Correctamente",
                         controlPerfil.mensajesPerfil,
@@ -487,7 +487,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                         backgroundColor: const Color.fromARGB(255, 73, 73, 73));
                     Get.toNamed("/login");
                   } else {
-                    controlPerfil.actualizarcatalogo(catalogo, null);
+                    controlPerfil.actualizarPerfil(catalogo, null);
                     Get.snackbar("No se pudo guardar el perfil",
                         controlPerfil.mensajesPerfil,
                         duration: const Duration(seconds: 4),
@@ -516,28 +516,32 @@ class _VistaAjustes extends State<VistaAjustes> {
   void _mostrarPopup() {
     setState(() {
       showDialog(
-          barrierColor: Colors.black.withOpacity(0.5),
+          barrierColor: _isDarkMode
+              ? Colors.white.withOpacity(0.5)
+              : Colors.black.withOpacity(0.5),
           context: context,
           builder: (BuildContext context) {
             return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
                 backgroundColor: _isDarkMode
-                    ? Color.fromARGB(255, 19, 18, 18)
-                    : Colors.white,
+                    ? Colors.white
+                    : Color.fromARGB(255, 19, 18, 18),
                 title: Text('Ajustar tamaño',
                     style: TextStyle(
-                        color: _isDarkMode ? Colors.white : Colors.black)),
+                        color: _isDarkMode ? Colors.black : Colors.white)),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text('Tamaño actual: $tamano',
                         style: TextStyle(
-                            color: _isDarkMode ? Colors.white : Colors.black)),
+                            color: _isDarkMode ? Colors.black : Colors.white)),
                     Slider(
                       value: tamano,
                       min: 0.0,
                       max: 24.0,
+                      divisions: 12,
+                      label: '$tamano',
                       onChanged: (double newValue) {
                         setState(() {
                           tamano = newValue;
@@ -559,7 +563,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                     child: Text(
                       'Aceptar',
                       style: TextStyle(
-                        color: _isDarkMode ? Colors.lightGreen : Colors.black,
+                        color: _isDarkMode ? Colors.black : Colors.lightGreen,
                       ),
                     ),
                   ),
@@ -570,7 +574,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                     child: Text(
                       'Cancelar',
                       style: TextStyle(
-                        color: _isDarkMode ? Colors.lightGreen : Colors.black,
+                        color: _isDarkMode ? Colors.black : Colors.lightGreen,
                       ),
                     ),
                   ),
@@ -609,7 +613,7 @@ class _VistaAjustes extends State<VistaAjustes> {
                     fontSize: tamano)),
             onTap: () {
               // Lógica para gestionar el perfil del usuario
-              var perfil = controlPerfil.obtenercatalogo(uid);
+              var perfil = controlPerfil.obtenerPerfil(uid);
               _mostrarGestionPerfil(perfil);
             },
           ),

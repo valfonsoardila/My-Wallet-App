@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_wallet_app/ui/auth/register.dart';
 import 'package:my_wallet_app/ui/auth/restaurar.dart';
-import 'package:my_wallet_app/ui/home/principal.dart';
+import 'package:my_wallet_app/ui/home/main_provider.dart';
 import 'package:my_wallet_app/ui/models/theme_model.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +47,7 @@ class MaterialAppWithTheme extends StatelessWidget {
         "/register": (context) => Register(),
         "/restaurar": (context) => Restaurar(),
         "/perfil": (context) => Perfil(),
-        "/principal": (context) => Principal(),
+        "/principal": (context) => MainProvider(),
       },
     );
   }

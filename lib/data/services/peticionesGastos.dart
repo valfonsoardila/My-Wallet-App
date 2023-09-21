@@ -8,7 +8,14 @@ class Peticiones {
 
   static Future<dynamic> creargasto(Map<String, dynamic> gastosPorFecha) async {
     try {
-      await _db.collection('gastos').add(gastosPorFecha);
+      await _db
+          .collection('gastos')
+          .doc(gastosPorFecha['id'])
+          .set(gastosPorFecha)
+          .catchError((e) {
+        print(e);
+        throw e; // Lanzar la excepción para que sea capturada en el controlador
+      });
       return "Proceso exitoso";
     } catch (e) {
       print(e);
@@ -24,6 +31,7 @@ class Peticiones {
           .collection('gastos')
           .where('uid', isEqualTo: uid)
           .get();
+
       //Comprueba si el documento existe
       if (gastos.docs.isNotEmpty) {
         gastos.docs.forEach((doc) {

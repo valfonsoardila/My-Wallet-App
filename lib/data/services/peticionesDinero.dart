@@ -8,7 +8,11 @@ class Peticiones {
 
   static Future<dynamic> crearmonto(Map<String, dynamic> dinero) async {
     try {
-      await _db.collection('dinero').doc().set(dinero).catchError((e) {
+      await _db
+          .collection('dinero')
+          .doc(dinero['id'])
+          .set(dinero)
+          .catchError((e) {
         print(e);
         throw e; // Lanzar la excepción para que sea capturada en el controlador
       });
@@ -28,10 +32,10 @@ class Peticiones {
       if (documents.length == 0) {
         return null;
       } else {
-        for (var doc in documents) {
-          lista.add(doc.data() as Map<String, dynamic>);
-        }
-        return lista[0]['dineroInicial'];
+        documents.forEach((element) {
+          lista.add(element.data() as Map<String, dynamic>);
+        });
+        return lista;
       }
     } catch (error) {
       print('Error en la operación de obtener dinero: $error');

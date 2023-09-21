@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 
 class VistaInicial extends StatefulWidget {
   final bool theme;
-  VistaInicial({Key? key, required this.theme}) : super(key: key);
+  final onReturnConcept;
+  VistaInicial({Key? key, required this.theme, this.onReturnConcept})
+      : super(key: key);
   @override
   _VistaInicialState createState() => _VistaInicialState();
 }
@@ -15,6 +17,7 @@ class _VistaInicialState extends State<VistaInicial>
     with SingleTickerProviderStateMixin {
   //VARIABLES DE CONTROL
   late AnimationController _controller;
+  String concepto = 'Servicios';
   bool _isDarkMode = false;
   double fontSize = 16.0;
   double tamano = 20.0;
@@ -24,28 +27,45 @@ class _VistaInicialState extends State<VistaInicial>
   var mobile = 45;
   //LISTA DE ICONOS
   List<IconData> itemIcons = [
-    Icons.directions_car,
-    Icons.fastfood,
-    Icons.shopping_bag,
     Icons.build,
+    Icons.shopping_bag,
+    Icons.fastfood,
+    Icons.directions_car,
+    Icons.business,
+    Icons.school,
+    Icons.local_hospital,
+    Icons.house,
     Icons.category,
   ];
   //LISTA DE CATEGORIAS
   List<String> itemNames = [
-    'Transporte',
-    'Alimentos',
-    'Ropa',
     'Servicios',
+    'Ropa',
+    'Alimentos',
+    'Transporte',
+    'Negocios',
+    'Educación',
+    'Salud',
+    'Vivienda',
     'Otro',
   ];
   //LISTA DE COLORES
   List<Color> itemColors = [
-    Colors.blue,
+    Colors.pinkAccent,
     Colors.red,
-    Colors.green,
-    Colors.orange,
+    Colors.blue,
     Colors.purple,
+    Colors.orange,
+    Colors.deepPurple,
+    Color.fromARGB(255, 99, 8, 8),
+    Colors.green,
+    Colors.brown,
   ];
+
+  //Callback para retornar concepto
+  retornarConcepto() {
+    widget.onReturnConcept(concepto);
+  }
 
   @override
   void initState() {
@@ -89,6 +109,7 @@ class _VistaInicialState extends State<VistaInicial>
         onTap: () {
           setState(() {
             selectedItem = itemNames[index];
+            concepto = itemNames[index];
           });
         },
         child: Column(
@@ -137,98 +158,98 @@ class _VistaInicialState extends State<VistaInicial>
     return Scaffold(
       backgroundColor: _isDarkMode ? Colors.white : Colors.black,
       appBar: AppBar(
-        backgroundColor: _isDarkMode ? Colors.white : Colors.black38,
-        title: Center(
-          child: Text(
-            'Vista Inicial',
-            style: TextStyle(
-              color: _isDarkMode ? Colors.black : Colors.white,
-            ),
-            textAlign: TextAlign.center,
+        backgroundColor: _isDarkMode ? Colors.white : Colors.grey[900],
+        automaticallyImplyLeading: false, // Oculta la flecha de retroceso
+        centerTitle: true, // Centra el título
+        title: Text(
+          'Vista Inicial',
+          style: TextStyle(
+            color: _isDarkMode ? Colors.black : Colors.white,
           ),
+          textAlign: TextAlign.center,
         ),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Container(
-              color: _isDarkMode ? Colors.white60 : Colors.grey[900],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Selecciona una categoría',
-                    style: TextStyle(
-                      color: _isDarkMode ? Colors.black : Colors.white,
-                      fontSize: tamano,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              Container(
+                color: _isDarkMode ? Colors.white60 : Colors.grey[800],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Selecciona una categoría',
+                      style: TextStyle(
+                        color: _isDarkMode ? Colors.black : Colors.white,
+                        fontSize: tamano,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Icon(
-                    Icons.category,
-                    color: _isDarkMode ? Colors.black : Colors.white,
-                  ),
-                ],
+                    SizedBox(width: 10),
+                    Icon(
+                      Icons.category,
+                      color: _isDarkMode ? Colors.black : Colors.white,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.717,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
-                      final double containerSize =
-                          MediaQuery.of(context).size.width * 0.75;
-                      return Stack(
-                        children: [
-                          Container(
-                            width: containerSize,
-                            height: containerSize,
-                            child: CustomPaint(
-                              painter: CirclePainter(
-                                radius: containerSize / 1.8,
-                                colors: itemColors,
-                              ),
-                              child: Stack(
-                                children: [
-                                  for (int i = 0; i < itemIcons.length; i++)
-                                    buildItem(i, _controller, containerSize),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: InkWell(
-                                focusColor: Colors.white12,
-                                hoverColor: Colors.white12,
-                                onTap: () {
-                                  // Lógica cuando se toca el botón circular en el centro
-                                },
-                                child: CircleAvatar(
-                                  radius: containerSize * 0.2,
-                                  backgroundColor:
-                                      _isDarkMode ? Colors.black : Colors.white,
-                                  child: Icon(Icons.add,
-                                      color: _isDarkMode
-                                          ? Colors.white
-                                          : Colors.black),
+              SizedBox(height: 20),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.717,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    LayoutBuilder(
+                      builder:
+                          (BuildContext context, BoxConstraints constraints) {
+                        final double containerSize =
+                            MediaQuery.of(context).size.width * 0.75;
+                        return Stack(
+                          children: [
+                            Container(
+                              width: containerSize,
+                              height: containerSize,
+                              child: CustomPaint(
+                                painter: CirclePainter(
+                                  radius: containerSize / 1.8,
+                                  colors: itemColors,
+                                ),
+                                child: Stack(
+                                  children: [
+                                    for (int i = 0; i < itemIcons.length; i++)
+                                      buildItem(i, _controller, containerSize),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ],
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      retornarConcepto();
+                                    },
+                                    child: Icon(Icons.add,
+                                        color: _isDarkMode
+                                            ? Colors.black
+                                            : Colors.white),
+                                    style: ElevatedButton.styleFrom(
+                                        shape: CircleBorder(),
+                                        minimumSize: Size(120, 120),
+                                        backgroundColor: _isDarkMode
+                                            ? Colors.white
+                                            : Colors.black)),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

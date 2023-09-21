@@ -271,7 +271,7 @@ class _PerfilState extends State<Perfil> {
                     'direccion': controlDireccion.text,
                     'celular': controlCelular.text,
                   };
-                  controlup.crearcatalogo(catalogo, _image);
+                  controlup.crearPerfil(catalogo, _image);
                   if (_image != null || _image == null) {
                     Get.snackbar("Perfil Guardado Correctamente",
                         controlup.mensajesPerfil,
@@ -279,7 +279,7 @@ class _PerfilState extends State<Perfil> {
                         backgroundColor: const Color.fromARGB(255, 73, 73, 73));
                     Get.toNamed("/login");
                   } else {
-                    controlup.crearcatalogo(catalogo, null);
+                    controlup.crearPerfil(catalogo, null);
                     Get.snackbar("No se pudo guardar el perfil",
                         controlup.mensajesPerfil,
                         duration: const Duration(seconds: 4),

@@ -8,32 +8,30 @@ class ControlUserPerfil extends GetxController {
   final _mensaje = "".obs;
   final Rxn<UserCredential> _perfil = Rxn<UserCredential>();
 
-  Future<void> crearcatalogo(Map<String, dynamic> catalogo, foto) async {
+  Future<void> crearPerfil(Map<String, dynamic> Perfil, foto) async {
     try {
-      _response.value = await Peticiones.crearcatalogo(catalogo, foto);
+      _response.value = await Peticiones.crearPerfil(Perfil, foto);
       await controlPerfil(_response.value);
     } catch (error) {
       print('Error en la operación de registro: $error');
       await Future.delayed(Duration(seconds: 2)); // Esperar 2 segundos
-      await crearcatalogo(catalogo, foto); // Reintentar el registro
+      await crearPerfil(Perfil, foto); // Reintentar el registro
     }
-    //  _response.value = await Peticiones.crearcatalogo(catalogo, foto);
-    //   await controlPerfil(_response.value);
   }
 
-  Future<void> actualizarcatalogo(Map<String, dynamic> catalogo, foto) async {
-    _response.value = await Peticiones.actualizarcatalogo(catalogo, foto);
+  Future<void> actualizarPerfil(Map<String, dynamic> Perfil, foto) async {
+    _response.value = await Peticiones.actualizarPerfil(Perfil, foto);
     await controlPerfil(_response.value);
   }
 
-  Future<void> eliminarcatalogo(Map<String, dynamic> catalogo) async {
-    _response.value = await Peticiones.eliminarcatalogo(catalogo);
+  Future<void> eliminarPerfil(Map<String, dynamic> Perfil) async {
+    _response.value = await Peticiones.eliminarPerfil(Perfil);
     await controlPerfil(_response.value);
   }
 
-  Future<Map<String, dynamic>> obtenercatalogo(String id) async {
+  Future<Map<String, dynamic>> obtenerPerfil(String id) async {
     print("llego al controlador");
-    _response.value = await Peticiones.obtenercatalogo(id);
+    _response.value = await Peticiones.obtenerPerfil(id);
     await controlPerfil(_response.value);
     print('esto fue lo que llego al controlador: ${_response.value}');
     return _response.value;

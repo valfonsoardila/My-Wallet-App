@@ -1,5 +1,8 @@
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
 import 'package:flutter/material.dart';
+import 'package:my_wallet_app/ui/models/theme_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
@@ -13,13 +16,39 @@ class _LoginState extends State<Login> {
   ControlUserAuth controlua = Get.find();
   TextEditingController user = TextEditingController();
   TextEditingController pass = TextEditingController();
+  bool _isDarkMode = false;
+  void guardarDatos() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('user', user.text);
+    prefs.setString('pass', pass.text);
+    await prefs.remove('userLoggedIn');
+  }
+
+  void cargarDatos() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    user.text = prefs.getString('user') ?? '';
+    pass.text = prefs.getString('pass') ?? '';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    cargarDatos();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeChanger>(context);
+    var temaActual = theme.getTheme();
+    if (temaActual == ThemeData.dark()) {
+      _isDarkMode = true;
+    } else {
+      _isDarkMode = false;
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.black,
+          color: _isDarkMode ? Colors.white : Colors.black,
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Stack(
@@ -53,12 +82,15 @@ class _LoginState extends State<Login> {
                       style: TextStyle(
                         fontSize: 24.0,
                         fontWeight: FontWeight.bold,
+                        color: _isDarkMode ? Colors.black : Colors.white,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 40.0),
                     TextFormField(
                       controller: user,
+                      style: TextStyle(
+                          color: _isDarkMode ? Colors.black : Colors.white),
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -66,16 +98,21 @@ class _LoginState extends State<Login> {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(
+                              color: _isDarkMode ? Colors.black : Colors.white),
                         ),
                         labelText: 'Correo electrónico',
-                        labelStyle: TextStyle(color: Colors.white),
-                        prefixIcon: Icon(Icons.email, color: Colors.white),
+                        labelStyle: TextStyle(
+                            color: _isDarkMode ? Colors.black : Colors.white),
+                        prefixIcon: Icon(Icons.email,
+                            color: _isDarkMode ? Colors.black : Colors.white),
                       ),
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
                       controller: pass,
+                      style: TextStyle(
+                          color: _isDarkMode ? Colors.black : Colors.white),
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -83,11 +120,14 @@ class _LoginState extends State<Login> {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(
+                              color: _isDarkMode ? Colors.black : Colors.white),
                         ),
                         labelText: 'Contraseña',
-                        labelStyle: TextStyle(color: Colors.white),
-                        prefixIcon: Icon(Icons.lock, color: Colors.white),
+                        labelStyle: TextStyle(
+                            color: _isDarkMode ? Colors.black : Colors.white),
+                        prefixIcon: Icon(Icons.lock,
+                            color: _isDarkMode ? Colors.black : Colors.white),
                       ),
                       obscureText: true,
                     ),
@@ -136,6 +176,7 @@ class _LoginState extends State<Login> {
                                   // controlua.userValido!.user?.uid;
                                   String uid = controlua.userValido!.user!.uid;
                                   Get.toNamed("/principal", arguments: uid);
+                                  guardarDatos();
                                   // Get.to(Home(uid: uid));
                                 }
                               }
@@ -151,7 +192,8 @@ class _LoginState extends State<Login> {
                       ),
                       child: Text(
                         'Iniciar sesión',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(
+                            color: _isDarkMode ? Colors.white : Colors.black),
                       ),
                     ),
                     SizedBox(
@@ -169,7 +211,9 @@ class _LoginState extends State<Login> {
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 fontSize: 18,
-                                color: Colors.lightGreen,
+                                color: _isDarkMode
+                                    ? Colors.black
+                                    : Colors.lightGreen,
                               ),
                             ),
                           ),
@@ -182,7 +226,9 @@ class _LoginState extends State<Login> {
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 fontSize: 18,
-                                color: Colors.lightGreen,
+                                color: _isDarkMode
+                                    ? Colors.black
+                                    : Colors.lightGreen,
                               ),
                             ),
                           ),

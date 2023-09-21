@@ -16,10 +16,16 @@ import 'package:provider/provider.dart';
 class NavegationScreen extends StatefulWidget {
   final String uid;
   final String foto;
-  final String dinero;
-
+  final dinero;
+  final mapDinero;
+  final gastos;
   NavegationScreen(
-      {Key? key, required this.uid, required this.foto, required this.dinero})
+      {Key? key,
+      required this.uid,
+      required this.foto,
+      this.dinero,
+      this.mapDinero,
+      this.gastos})
       : super(key: key);
   @override
   State<NavegationScreen> createState() => _NavegationScreenState();
@@ -40,6 +46,7 @@ class _NavegationScreenState extends State<NavegationScreen> {
   double xOffset = 0;
   double yOffset = 0;
   bool isDrawerOpen = false;
+  String concepto = '';
   //VARIABLES DE ESTADOS
   var montoactual;
   var foto = "";
@@ -49,12 +56,31 @@ class _NavegationScreenState extends State<NavegationScreen> {
   final DateTime now = DateTime.now();
   //LISTAS
   List<int> _selectedIndexList = [0, 1, 2, 3];
-
   bool _isDarkMode = false;
+
+  void obtenerConceptoSeleccionado(String concepto) {
+    this.concepto = concepto;
+    setState(() {
+      _page = 2;
+    });
+  }
+
+  void eliminarMontoActual() {
+    controldu.eliminarDinero(widget.mapDinero).then((value) => {
+          if (controldu.datosDinero == true)
+            {
+              setState(() {
+                montoactual = '0';
+              })
+            }
+        });
+  }
 
   @override
   void initState() {
     super.initState();
+    montoactual = widget.dinero;
+    print("Este es ele monto actual: $montoactual");
     _montoInicialController = TextEditingController();
     _focusScopeNode = FocusScopeNode();
     uid = widget.uid;
@@ -70,9 +96,21 @@ class _NavegationScreenState extends State<NavegationScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
-      VistaInicial(theme: isDrawerOpen),
-      VistaGrafica(theme: isDrawerOpen),
-      VistaGastos(uid: uid, theme: isDrawerOpen),
+      VistaInicial(
+          theme: isDrawerOpen, onReturnConcept: obtenerConceptoSeleccionado),
+      VistaGrafica(
+        uid: uid,
+        theme: isDrawerOpen,
+        dinero: widget.dinero,
+        gastos: widget.gastos,
+      ),
+      VistaGastos(
+        uid: uid,
+        theme: isDrawerOpen,
+        dinero: widget.dinero,
+        gastos: widget.gastos,
+        concepto: concepto,
+      ),
       VistaAjustes(uid: uid, theme: isDrawerOpen),
     ];
     final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
@@ -157,17 +195,69 @@ class _NavegationScreenState extends State<NavegationScreen> {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.monetization_on, color: Colors.white),
-                            SizedBox(width: 5.0),
-                            Text(
-                              "$montoactual",
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                              textAlign: TextAlign.start,
-                            ),
+                            montoactual != '0'
+                                ? Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.634,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Icon(Icons.monetization_on,
+                                            color: Colors.white),
+                                        Text(
+                                          "$montoactual",
+                                          style: TextStyle(
+                                            fontSize: 24.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            eliminarMontoActual();
+                                          },
+                                          icon: Icon(Icons.delete,
+                                              color: Colors.white),
+                                          iconSize: 20,
+                                          tooltip: 'Eliminar dinero inicial',
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.red),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            )),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                : Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.634,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Icon(Icons.monetization_on,
+                                            color: Colors.white),
+                                        Text(
+                                          "0",
+                                          style: TextStyle(
+                                            fontSize: 24.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
@@ -185,6 +275,7 @@ class _NavegationScreenState extends State<NavegationScreen> {
                           Expanded(
                             child: TextFormField(
                               controller: _montoInicialController,
+                              keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -204,7 +295,9 @@ class _NavegationScreenState extends State<NavegationScreen> {
                                       _isDarkMode ? Colors.black : Colors.white,
                                 ),
                                 prefixIcon: Icon(Icons.monetization_on,
-                                    color: Colors.white),
+                                    color: _isDarkMode
+                                        ? Colors.lightGreen
+                                        : Colors.white),
                               ),
                               style: TextStyle(
                                 color:
@@ -213,52 +306,139 @@ class _NavegationScreenState extends State<NavegationScreen> {
                             ),
                           ),
                           SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              var dinero = <String, dynamic>{
-                                'id': uid,
-                                'dineroInicial': _montoInicialController.text,
-                                'fecha': formattedDate,
-                                'hora': formattedTime,
-                              };
-                              controldu.crearDinero(dinero);
-                              if (_montoInicialController != 0) {
-                                if (controldu.mensajesDinero ==
-                                    "Proceso exitoso") {
-                                  Get.snackbar("Se ha guardado el dinero",
-                                      controldu.mensajesDinero,
-                                      duration: Duration(seconds: 4),
-                                      backgroundColor:
-                                          Color.fromARGB(255, 73, 73, 73));
-                                } else {
-                                  Get.snackbar("No se pudo guardar el dinero",
-                                      controldu.mensajesDinero,
-                                      duration: Duration(seconds: 4),
-                                      backgroundColor:
-                                          Color.fromARGB(255, 73, 73, 73));
-                                }
-                              }
-                              // setState(() {
-                              //   montoInicial = double.parse(
-                              //       _montoInicialController.text);
-                              // });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              fixedSize: Size(120, 50),
-                              backgroundColor: Colors.lightGreen,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              'Guardar',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
+                          montoactual != '0'
+                              ? ElevatedButton(
+                                  onPressed: () {
+                                    var dinero = <String, dynamic>{
+                                      'id': uid,
+                                      'dineroInicial': double.parse(
+                                          _montoInicialController.text),
+                                      'fecha': formattedDate,
+                                      'hora': formattedTime,
+                                    };
+                                    //consulta dinero inicial
+                                    controldu
+                                        .actualizarDinero(dinero)
+                                        .then((value) => {
+                                              if (controldu.datosDinero != null)
+                                                {
+                                                  setState(() {
+                                                    controldu
+                                                        .obtenerDinero(uid)
+                                                        .then((value) => {
+                                                              if (controldu
+                                                                      .datosDinero !=
+                                                                  null)
+                                                                {
+                                                                  _montoInicialController
+                                                                      .clear(),
+                                                                  setState(() {
+                                                                    montoactual = controldu
+                                                                        .datosDinero[
+                                                                            0][
+                                                                            'dineroInicial']
+                                                                        .toString();
+                                                                  })
+                                                                }
+                                                            });
+                                                  })
+                                                }
+                                            });
+
+                                    // setState(() {
+                                    //   montoInicial = double.parse(
+                                    //       _montoInicialController.text);
+                                    // });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize: Size(120, 50),
+                                    backgroundColor: Colors.lightGreen,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Modificar',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ))
+                              : ElevatedButton(
+                                  onPressed: () {
+                                    var dinero = <String, dynamic>{
+                                      'id': uid,
+                                      'dineroInicial': double.parse(
+                                          _montoInicialController.text),
+                                      'fecha': formattedDate,
+                                      'hora': formattedTime,
+                                    };
+                                    //crea el dinero inicial
+                                    controldu
+                                        .crearDinero(dinero)
+                                        .then((value) => {
+                                              if (controldu.datosDinero == true)
+                                                {
+                                                  if (controldu
+                                                          .mensajesDinero ==
+                                                      "Proceso exitoso")
+                                                    {
+                                                      // Get.snackbar(
+                                                      //     "Se ha guardado el dinero",
+                                                      //     controldu
+                                                      //         .mensajesDinero,
+                                                      //     duration: Duration(
+                                                      //         seconds: 4),
+                                                      //     backgroundColor:
+                                                      //         Color.fromARGB(
+                                                      //             255,
+                                                      //             73,
+                                                      //             73,
+                                                      //             73)),
+                                                      //consulta dinero inicial
+                                                      controldu
+                                                          .obtenerDinero(uid)
+                                                          .then((value) => {
+                                                                if (controldu
+                                                                        .datosDinero !=
+                                                                    null)
+                                                                  {
+                                                                    setState(
+                                                                        () {
+                                                                      _montoInicialController
+                                                                          .clear();
+                                                                      montoactual = controldu
+                                                                          .datosDinero[
+                                                                              0]
+                                                                              [
+                                                                              'dineroInicial']
+                                                                          .toString();
+                                                                      print(
+                                                                          montoactual);
+                                                                    })
+                                                                  }
+                                                              })
+                                                    }
+                                                }
+                                            });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize: Size(120, 50),
+                                    backgroundColor: Colors.lightGreen,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Guardar',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
                     ],
@@ -271,10 +451,14 @@ class _NavegationScreenState extends State<NavegationScreen> {
             index: _selectedIndexList[_page],
             height: 60.0,
             items: <Widget>[
-              Icon(Icons.home, size: 30),
-              Icon(Icons.show_chart, size: 30),
-              Icon(Icons.attach_money_sharp, size: 30),
-              Icon(Icons.settings, size: 30),
+              Icon(Icons.home,
+                  size: 30, color: _isDarkMode ? Colors.white : Colors.black),
+              Icon(Icons.show_chart,
+                  size: 30, color: _isDarkMode ? Colors.white : Colors.black),
+              Icon(Icons.attach_money_sharp,
+                  size: 30, color: _isDarkMode ? Colors.white : Colors.black),
+              Icon(Icons.settings,
+                  size: 30, color: _isDarkMode ? Colors.white : Colors.black),
             ],
             color: Colors.lightGreen,
             buttonBackgroundColor:
@@ -321,7 +505,7 @@ class _NavegationScreenState extends State<NavegationScreen> {
               style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white),
+                  color: _isDarkMode ? Colors.white : Colors.black),
               textAlign: TextAlign.center,
             ),
             centerTitle: true,
@@ -331,9 +515,7 @@ class _NavegationScreenState extends State<NavegationScreen> {
           //Estilos para el contenido de la aplicacion
           body: Container(
             color: _isDarkMode ? Colors.black : Colors.white,
-            child: Center(
-              child: _widgetOptions[_page],
-            ),
+            child: _widgetOptions[_page],
           )),
     );
   }
@@ -453,7 +635,7 @@ class CircleAvatarOpen extends StatelessWidget {
     if (img != null && Uri.parse(img).isAbsolute) {
       // Si img es una URL válida, carga la imagen desde la URL
       imageWidget = CircleAvatar(
-        radius: 25,
+        radius: 30,
         backgroundImage: NetworkImage(img),
         child: Container(
           alignment: Alignment.center,
@@ -466,7 +648,7 @@ class CircleAvatarOpen extends StatelessWidget {
     } else {
       // Si img no es una URL válida, carga la imagen desde el recurso local
       imageWidget = CircleAvatar(
-        radius: 25,
+        radius: 30,
         backgroundImage: AssetImage('assets/images/user.png'),
         child: Container(
           alignment: Alignment.center,
@@ -483,7 +665,7 @@ class CircleAvatarOpen extends StatelessWidget {
       children: <Widget>[
         Expanded(child: imageWidget),
         SizedBox(
-          width: 20,
+          width: 10,
         ),
       ],
     );

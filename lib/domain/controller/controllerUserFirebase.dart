@@ -43,8 +43,9 @@ class ControlUserAuth extends GetxController {
     } else if (respuesta == "1" || respuesta == "2") {
       _mensaje.value = "Por favor intente de nuevo";
     } else {
-      _mensaje.value = "Proceso exitoso";
-      _usuario.value = respuesta;
+      if (respuesta is UserCredential) {
+        _usuario.value = respuesta;
+      }
     }
   }
 

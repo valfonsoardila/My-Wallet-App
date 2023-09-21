@@ -8,7 +8,7 @@ class ControlGastoUser extends GetxController {
   final _mensaje = "".obs;
   final Rxn<UserCredential> _perfil = Rxn<UserCredential>();
 
-  Future<void> agregargasto(Map<String, dynamic> gastosPorFecha) async {
+  Future<void> agregarGastos(Map<String, dynamic> gastosPorFecha) async {
     try {
       _response.value = await Peticiones.creargasto(gastosPorFecha);
       await controlGastos(_response.value);
@@ -19,7 +19,7 @@ class ControlGastoUser extends GetxController {
     }
   }
 
-  Future<void> obtenergastos(String uid) async {
+  Future<void> obtenerGastos(String uid) async {
     try {
       _Datos.value = await Peticiones.obtenergastos(uid);
       await controlGastos(_Datos.value);
@@ -70,5 +70,4 @@ class ControlGastoUser extends GetxController {
   List<Map<String, dynamic>> get datosGastos => _Datos.value;
   dynamic get estadoGasto => _response.value;
   String get mensajesPorGastos => _mensaje.value;
-  UserCredential? get perfilValido => _perfil.value;
 }
