@@ -123,21 +123,39 @@ class _VistaInicialState extends State<VistaInicial>
                   width: 1,
                 ),
               ),
-              child: CircleAvatar(
-                backgroundColor: itemColor,
-                radius: 30,
-                child: Icon(
-                  itemIcons[index],
-                  color: isSelected ? itemColors[index] : Colors.white,
+              child: Tooltip(
+                //triggerMode: TooltipTriggerMode.tap,
+                decoration: BoxDecoration(
+                  color: _isDarkMode ? Colors.white : Colors.black,
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(
+                    color: _isDarkMode ? Colors.white : Colors.black,
+                    width: 1,
+                  ),
+                ),
+                richMessage: TextSpan(
+                  text: itemNames[index],
+                  style: TextStyle(
+                    color: _isDarkMode ? Colors.black : Colors.white,
+                    fontSize: fontSize,
+                  ),
+                ),
+                child: CircleAvatar(
+                  backgroundColor: itemColor,
+                  radius: 30,
+                  child: Icon(
+                    itemIcons[index],
+                    color: isSelected ? itemColors[index] : Colors.white,
+                  ),
                 ),
               ),
             ),
-            Text(
-              itemNames[index],
-              style: TextStyle(
-                  color: _isDarkMode ? Colors.white : Colors.black,
-                  fontSize: fontSize),
-            ),
+            // Text(
+            //   itemNames[index],
+            //   style: TextStyle(
+            //       color: _isDarkMode ? Colors.white : Colors.black,
+            //       fontSize: fontSize),
+            // ),
             SizedBox(height: 8),
           ],
         ),

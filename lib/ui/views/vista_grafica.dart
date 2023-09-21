@@ -129,7 +129,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
           if (controldu.datosDinero != null)
             {
               setState(() {
-                dinero = controldu.datosDinero[0]['dineroInicial'];
+                dinero = controldu.datosDinero[0]['dineroInicial'].toDouble();
                 if (dinero > 0) {
                   obtenerGastos();
                   obtenerAhorros();

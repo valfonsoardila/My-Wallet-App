@@ -510,7 +510,7 @@ class _VistaGastosState extends State<VistaGastos> {
                             height: 30,
                             color: Colors.lightGreen,
                             child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 2.0),
+                              //margin: EdgeInsets.symmetric(horizontal: 2.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -549,9 +549,7 @@ class _VistaGastosState extends State<VistaGastos> {
                                               isExpanded: true,
                                               underline: SizedBox(),
                                               style: TextStyle(
-                                                color: _isDarkMode == true
-                                                    ? Colors.black
-                                                    : Colors.white,
+                                                color: Colors.white,
                                               ),
                                               value: filtroSeleccionadoDropd1,
                                               onChanged: (newValue) {
@@ -628,11 +626,10 @@ class _VistaGastosState extends State<VistaGastos> {
                                   Container(
                                     width: MediaQuery.of(context).size.width *
                                         0.32,
-                                    alignment: Alignment.center,
                                     child: Text(
-                                      'Gastos vs Inversion',
+                                      'GastosVSInversion',
                                       style: TextStyle(
-                                        fontSize: 16.0,
+                                        fontSize: 15.0,
                                         fontWeight: FontWeight.bold,
                                         color: _isDarkMode == true
                                             ? Colors.black
