@@ -104,7 +104,8 @@ class _VistaInicialState extends State<VistaInicial>
 
     return Positioned(
       left: x - 30,
-      top: y - 40,
+      //top: y - 40,
+      top: y - 30,
       child: GestureDetector(
         onTap: () {
           setState(() {

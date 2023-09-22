@@ -232,10 +232,29 @@ class _VistaGraficaState extends State<VistaGrafica> {
                 children: [
                   Row(
                     children: [
-                      Container(
-                        width: 20,
-                        height: 20,
-                        color: Colors.red,
+                      Tooltip(
+                        triggerMode: TooltipTriggerMode.tap,
+                        decoration: BoxDecoration(
+                          color:
+                              _isDarkMode ? Colors.grey[200] : Colors.grey[900],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        richMessage: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Gastos',
+                              style: TextStyle(
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          color: Colors.red,
+                        ),
                       ),
                       SizedBox(
                         width: 5,
@@ -253,10 +272,29 @@ class _VistaGraficaState extends State<VistaGrafica> {
                   ),
                   Row(
                     children: [
-                      Container(
-                        width: 20,
-                        height: 20,
-                        color: Colors.blue,
+                      Tooltip(
+                        triggerMode: TooltipTriggerMode.tap,
+                        decoration: BoxDecoration(
+                          color:
+                              _isDarkMode ? Colors.grey[200] : Colors.grey[900],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        richMessage: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Ahorros',
+                              style: TextStyle(
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          color: Colors.blue,
+                        ),
                       ),
                       SizedBox(
                         width: 5,
@@ -274,10 +312,29 @@ class _VistaGraficaState extends State<VistaGrafica> {
                   ),
                   Row(
                     children: [
-                      Container(
-                        width: 20,
-                        height: 20,
-                        color: Colors.green,
+                      Tooltip(
+                        triggerMode: TooltipTriggerMode.tap,
+                        decoration: BoxDecoration(
+                          color:
+                              _isDarkMode ? Colors.grey[200] : Colors.grey[900],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        richMessage: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Inversiones',
+                              style: TextStyle(
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          color: Colors.green,
+                        ),
                       ),
                       SizedBox(
                         width: 5,
@@ -295,10 +352,29 @@ class _VistaGraficaState extends State<VistaGrafica> {
                   ),
                   Row(
                     children: [
-                      Container(
-                        width: 20,
-                        height: 20,
-                        color: Colors.yellow,
+                      Tooltip(
+                        triggerMode: TooltipTriggerMode.tap,
+                        decoration: BoxDecoration(
+                          color:
+                              _isDarkMode ? Colors.grey[200] : Colors.grey[900],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        richMessage: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Otros',
+                              style: TextStyle(
+                                color:
+                                    _isDarkMode ? Colors.black : Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          color: Colors.yellow,
+                        ),
                       ),
                       SizedBox(
                         width: 5,

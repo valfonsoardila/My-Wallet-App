@@ -549,7 +549,9 @@ class _VistaGastosState extends State<VistaGastos> {
                                               isExpanded: true,
                                               underline: SizedBox(),
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: _isDarkMode == true
+                                                    ? Colors.black
+                                                    : Colors.white,
                                               ),
                                               value: filtroSeleccionadoDropd1,
                                               onChanged: (newValue) {
@@ -666,12 +668,28 @@ class _VistaGastosState extends State<VistaGastos> {
                                   AlwaysScrollableScrollPhysics(), // Permitir scroll siempre
                               itemCount: gastosPorFecha.length,
                               itemBuilder: (context, index) {
+                                //Fecha
                                 String fecha =
                                     gastosPorFecha.keys.toList()[index];
+                                //Lista de gastos para la fecha
                                 List<double> gastos = gastosPorFecha[fecha]!
                                     .values
                                     .expand((element) => element)
                                     .toList();
+                                //dira si es gasto o inversion
+                                if (gastosPorFecha[fecha]!.keys.first == "Servicios" ||
+                                    gastosPorFecha[fecha]!.keys.first ==
+                                        "Ropa" ||
+                                    gastosPorFecha[fecha]!.keys.first ==
+                                        "Alimentos" ||
+                                    gastosPorFecha[fecha]!.keys.first ==
+                                        "Transporte" ||
+                                    gastosPorFecha[fecha]!.keys.first ==
+                                        "Otro") {
+                                  _isExpense = true;
+                                } else {
+                                  _isExpense = false;
+                                }
                                 return ExpansionTile(
                                   collapsedShape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
@@ -685,7 +703,7 @@ class _VistaGastosState extends State<VistaGastos> {
                                       : Colors.grey[800],
                                   title: _isExpense
                                       ? Text(
-                                          "Inversion # ${index + 1}",
+                                          "Gastos # ${index + 1}",
                                           style: TextStyle(
                                             fontSize: 16.0,
                                             color: _isDarkMode
@@ -696,7 +714,7 @@ class _VistaGastosState extends State<VistaGastos> {
                                           textAlign: TextAlign.center,
                                         )
                                       : Text(
-                                          "Gastos # ${index + 1}",
+                                          "Inversion # ${index + 1}",
                                           style: TextStyle(
                                             fontSize: 16.0,
                                             color: _isDarkMode
@@ -717,6 +735,13 @@ class _VistaGastosState extends State<VistaGastos> {
                                     textAlign: TextAlign.center,
                                   ),
                                   children: gastos.map((gasto) {
+                                    String hora = gastosPorFecha[fecha]!
+                                        .keys
+                                        .firstWhere(
+                                            (key) =>
+                                                gastosPorFecha[fecha]![key]!
+                                                    .contains(gasto),
+                                            orElse: () => '');
                                     String concepto = gastosPorFecha[fecha]!
                                         .keys
                                         .firstWhere(
