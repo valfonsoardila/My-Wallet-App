@@ -248,7 +248,9 @@ class _VistaAjustes extends State<VistaAjustes> {
                                 _showPassword
                                     ? Icons.visibility
                                     : Icons.visibility_off,
-                                color: Colors.white,
+                                color: _isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
                               ),
                             ),
                           ),
