@@ -1,9 +1,11 @@
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
+import 'package:my_wallet_app/ui/models/theme_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 
 class Register extends StatelessWidget {
-  const Register({super.key});
+  Register({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,23 +15,38 @@ class Register extends StatelessWidget {
     TextEditingController nombre = TextEditingController();
     TextEditingController user = TextEditingController();
     TextEditingController pass = TextEditingController();
+    bool _isDarkMode = false;
+    final theme = Provider.of<ThemeChanger>(context);
+    var temaActual = theme.getTheme();
+    if (temaActual == ThemeData.dark()) {
+      _isDarkMode = true;
+    } else {
+      _isDarkMode = false;
+    }
     return Container(
-      color: Colors.black,
+      color: _isDarkMode ? Colors.white : Colors.black,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            color: _isDarkMode ? Colors.black : Colors.white,
+            onPressed: () {
+              Get.toNamed('/login');
+            },
+          ),
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: Container(
-            color: Colors.black,
+            color: _isDarkMode ? Colors.white : Colors.black,
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Stack(children: [
               Container(
-                padding: const EdgeInsets.only(left: 80, top: 30),
-                child: const Column(
+                padding: EdgeInsets.only(left: 80, top: 30),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -51,70 +68,84 @@ class Register extends StatelessWidget {
                 child: Column(children: [
                   TextFormField(
                     controller: nombre,
+                    style: TextStyle(
+                        color: _isDarkMode ? Colors.black : Colors.white),
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.lightGreen),
+                        borderSide: BorderSide(color: Colors.lightGreen),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.white),
+                        borderSide: BorderSide(
+                            color: _isDarkMode ? Colors.black : Colors.white),
                       ),
                       labelText: 'Nombre completo',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      prefixIcon: const Icon(Icons.supervised_user_circle,
-                          color: Colors.white),
+                      labelStyle: TextStyle(
+                          color: _isDarkMode ? Colors.black : Colors.white),
+                      prefixIcon: Icon(Icons.supervised_user_circle,
+                          color: _isDarkMode ? Colors.black : Colors.white),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 30,
                   ),
                   TextFormField(
                     controller: user,
+                    style: TextStyle(
+                        color: _isDarkMode ? Colors.black : Colors.white),
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.lightGreen),
+                        borderSide: BorderSide(color: Colors.lightGreen),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.white),
+                        borderSide: BorderSide(
+                            color: _isDarkMode ? Colors.black : Colors.white),
                       ),
                       labelText: 'Correo electrónico',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      prefixIcon: const Icon(Icons.email, color: Colors.white),
+                      labelStyle: TextStyle(
+                          color: _isDarkMode ? Colors.black : Colors.white),
+                      prefixIcon: Icon(Icons.email,
+                          color: _isDarkMode ? Colors.black : Colors.white),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 30,
                   ),
                   TextFormField(
                     controller: pass,
                     obscureText: true,
+                    style: TextStyle(
+                        color: _isDarkMode ? Colors.black : Colors.white),
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.lightGreen),
+                        borderSide: BorderSide(color: Colors.lightGreen),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.white),
+                        borderSide: BorderSide(
+                            color: _isDarkMode ? Colors.black : Colors.white),
                       ),
                       labelText: 'Contraseña',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      prefixIcon: const Icon(Icons.lock, color: Colors.white),
+                      labelStyle: TextStyle(
+                          color: _isDarkMode ? Colors.black : Colors.white),
+                      prefixIcon: Icon(Icons.lock,
+                          color: _isDarkMode ? Colors.black : Colors.white),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 40,
                   ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Registrarse',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: _isDarkMode ? Colors.black : Colors.white,
                             fontSize: 27,
                             fontWeight: FontWeight.w700,
                           ),
@@ -128,35 +159,33 @@ class Register extends StatelessWidget {
                               if (nombre.text.isEmpty &&
                                   user.text.isEmpty &&
                                   pass.text.isEmpty) {
-                                Get.snackbar(
-                                    "Por favor llene todos los campos",
+                                Get.snackbar("Por favor llene todos los campos",
                                     controlua.mensajesUser,
-                                    duration: const Duration(seconds: 4),
+                                    duration: Duration(seconds: 4),
                                     backgroundColor:
-                                        const Color.fromARGB(255, 73, 73, 73));
+                                        Color.fromARGB(255, 73, 73, 73));
                               } else if (nombre.text.isEmpty) {
                                 Get.snackbar(
-                                      "Por favor llene el campo de nombre",
-                                      controlua.mensajesUser,
-                                      duration: const Duration(seconds: 4),
-                                      backgroundColor: const Color.fromARGB(
-                                          255, 73, 73, 73));
-                              } else if(user.text.isEmpty){
+                                    "Por favor llene el campo de nombre",
+                                    controlua.mensajesUser,
+                                    duration: Duration(seconds: 4),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 73, 73, 73));
+                              } else if (user.text.isEmpty) {
                                 Get.snackbar(
                                     "Por favor llene el campo de correo",
                                     controlua.mensajesUser,
-                                    duration: const Duration(seconds: 4),
-                                    backgroundColor: const Color.fromARGB(
-                                        255, 73, 73, 73));
-
-                              }else if(pass.text.isEmpty){
+                                    duration: Duration(seconds: 4),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 73, 73, 73));
+                              } else if (pass.text.isEmpty) {
                                 Get.snackbar(
                                     "Por favor llene el campo de contraseña",
                                     controlua.mensajesUser,
-                                    duration: const Duration(seconds: 4),
-                                    backgroundColor: const Color.fromARGB(
-                                        255, 73, 73, 73));
-                              }else {
+                                    duration: Duration(seconds: 4),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 73, 73, 73));
+                              } else {
                                 controlua
                                     .crearUser(user.text, pass.text)
                                     .then((value) {
@@ -164,15 +193,15 @@ class Register extends StatelessWidget {
                                     Get.snackbar(
                                         "Error al registrar, Asegurate de que tu contraseña es mayor a 6 caracteres",
                                         controlua.mensajesUser,
-                                        duration: const Duration(seconds: 4),
-                                        backgroundColor: const Color.fromARGB(
-                                            255, 73, 73, 73));
+                                        duration: Duration(seconds: 4),
+                                        backgroundColor:
+                                            Color.fromARGB(255, 73, 73, 73));
                                   } else {
                                     Get.snackbar("¡Registrado Correctamente!",
                                         controlua.mensajesUser,
-                                        duration: const Duration(seconds: 4),
-                                        backgroundColor: const Color.fromARGB(
-                                            255, 73, 73, 73));
+                                        duration: Duration(seconds: 4),
+                                        backgroundColor:
+                                            Color.fromARGB(255, 73, 73, 73));
                                     String password = pass.text;
                                     Get.toNamed("/perfil", arguments: [
                                       nombre.text,
@@ -183,11 +212,11 @@ class Register extends StatelessWidget {
                                 });
                               }
                             },
-                            icon: const Icon(Icons.arrow_forward),
+                            icon: Icon(Icons.arrow_forward),
                           ),
                         ),
                       ]),
-                  const SizedBox(
+                  SizedBox(
                     height: 40,
                   ),
                   Row(
@@ -197,7 +226,7 @@ class Register extends StatelessWidget {
                           onPressed: () {
                             Get.toNamed('/login');
                           },
-                          child: const Text(
+                          child: Text(
                             'Inicio',
                             style: TextStyle(
                               decoration: TextDecoration.underline,

@@ -3,6 +3,8 @@ import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
 import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:my_wallet_app/ui/models/theme_model.dart';
+import 'package:provider/provider.dart';
 
 class DrawerScreen extends StatefulWidget {
   final String uid;
@@ -31,6 +33,7 @@ class DrawerScreen extends StatefulWidget {
 class _DrawerScreenState extends State<DrawerScreen> {
   ControlUserAuth controlua = Get.find();
   ControlUserPerfil controlPerfil = Get.find();
+  bool _isDarkMode = false;
   var correo = "";
   var nombre = "";
   var profesion = "";
@@ -54,8 +57,15 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeChanger>(context);
+    var temaActual = theme.getTheme();
+    if (temaActual == ThemeData.dark()) {
+      _isDarkMode = true;
+    } else {
+      _isDarkMode = false;
+    }
     return Container(
-      color: Colors.grey[900],
+      color: _isDarkMode ? Colors.grey[200] : Colors.grey[900],
       child: Padding(
         padding: EdgeInsets.only(top: 50, left: 40, bottom: 70),
         child: Column(
@@ -76,7 +86,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 Text(
                   'MyWallet APP',
                   style: TextStyle(
-                      color: Colors.white,
+                      color: _isDarkMode ? Colors.black : Colors.white,
                       fontSize: 22,
                       fontWeight: FontWeight.bold),
                 ),
@@ -84,11 +94,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
             ),
             NewImage(img: foto, text: ''),
             NewRow(
+              themeMode: _isDarkMode,
               textOne: 'Coreo electronico',
               icon: Icons.person_pin_rounded,
               textTwo: correo,
             ),
             NewRow(
+              themeMode: _isDarkMode,
               textOne: 'Nombre de usuario',
               icon: Icons.person_outline,
               textTwo: nombre,
@@ -97,6 +109,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               height: 20,
             ),
             NewRow(
+              themeMode: _isDarkMode,
               textOne: 'Profesion',
               icon: Icons.work_outline,
               textTwo: profesion,
@@ -105,6 +118,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               height: 20,
             ),
             NewRow(
+              themeMode: _isDarkMode,
               textOne: 'Ciudad',
               icon: Icons.location_on_outlined,
               textTwo: ciudad,
@@ -113,6 +127,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               height: 20,
             ),
             NewRow(
+              themeMode: _isDarkMode,
               textOne: 'Direccion',
               icon: Icons.home_outlined,
               textTwo: direccion,
@@ -121,6 +136,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               height: 20,
             ),
             NewRow(
+              themeMode: _isDarkMode,
               textOne: 'Celular',
               icon: Icons.phone_outlined,
               textTwo: celular,
@@ -146,14 +162,19 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 children: [
                   Icon(
                     Icons.cancel,
-                    color: Colors.lightGreen.withOpacity(0.5),
+                    color: _isDarkMode
+                        ? Colors.grey[700]
+                        : Colors.lightGreen.withOpacity(0.5),
                   ),
                   SizedBox(
                     width: 10,
                   ),
                   Text(
                     'Log out',
-                    style: TextStyle(color: Colors.lightGreen.withOpacity(0.5)),
+                    style: TextStyle(
+                        color: _isDarkMode
+                            ? Colors.grey[700]
+                            : Colors.lightGreen.withOpacity(0.5)),
                   ),
                 ],
               ),
@@ -166,12 +187,14 @@ class _DrawerScreenState extends State<DrawerScreen> {
 }
 
 class NewRow extends StatelessWidget {
+  final bool themeMode;
   final IconData icon;
   final String textOne;
   final String textTwo;
 
   NewRow({
     Key? key,
+    required this.themeMode,
     required this.icon,
     required this.textOne,
     required this.textTwo,
@@ -197,7 +220,7 @@ class NewRow extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: Icon(
                             icon,
-                            color: Colors.white,
+                            color: themeMode ? Colors.black : Colors.white,
                           ),
                         ),
                         SizedBox(
@@ -209,14 +232,16 @@ class NewRow extends StatelessWidget {
                             Text(
                               textOne,
                               style: TextStyle(
-                                color: Colors.white,
+                                color: themeMode ? Colors.black : Colors.white,
                                 fontSize: 14,
                               ),
                             ),
                             Text(
                               textTwo,
                               style: TextStyle(
-                                color: Colors.lightGreenAccent,
+                                color: themeMode
+                                    ? Colors.grey[700]
+                                    : Colors.lightGreenAccent,
                                 fontSize: 16,
                               ),
                             ),

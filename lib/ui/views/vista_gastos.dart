@@ -50,6 +50,7 @@ class _VistaGastosState extends State<VistaGastos> {
   var uid;
   int indexIcon = 1;
   int indexFiltro = 0;
+  double dinero = 0.0;
   List<IconData> itemIcons = [
     Icons.home,
     Icons.build,
@@ -225,6 +226,7 @@ class _VistaGastosState extends State<VistaGastos> {
   void initState() {
     super.initState();
     uid = widget.uid;
+    dinero = widget.dinero.toDouble();
     if (widget.gastos.length > 0) {
       print('Cargando gastos');
       loadExpenses();
@@ -488,7 +490,17 @@ class _VistaGastosState extends State<VistaGastos> {
                       SizedBox(height: 10.0),
                       ElevatedButton(
                         onPressed: () {
-                          addExpense();
+                          if (montoactual != null &&
+                              (montoactual).toDouble() >=
+                                  double.parse(_expenseController.text)) {
+                            addExpense();
+                          } else {
+                            Get.snackbar("No tienes dinero registrado",
+                                "Asegurate de tener dinero registrado",
+                                duration: Duration(seconds: 4),
+                                backgroundColor:
+                                    Color.fromARGB(255, 73, 73, 73));
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.lightGreen,

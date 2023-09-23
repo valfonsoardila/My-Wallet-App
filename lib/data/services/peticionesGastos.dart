@@ -72,4 +72,29 @@ class Peticiones {
       return "1";
     }
   }
+
+  static Future<dynamic> eliminarGastos(uid) async {
+    try {
+      //Eliminar coincidencias por el campo id
+      await _db
+          .collection('gastos')
+          .where('uid', isEqualTo: uid)
+          .get()
+          .then((snapshot) {
+        for (DocumentSnapshot ds in snapshot.docs) {
+          ds.reference.delete();
+        }
+      });
+      //Eliminar todo
+      // await _db.collection('gastos').get().then((snapshot) {
+      //   for (DocumentSnapshot ds in snapshot.docs) {
+      //     ds.reference.delete();
+      //   }
+      // });
+      return "Proceso exitoso";
+    } catch (e) {
+      print(e);
+      return "1";
+    }
+  }
 }

@@ -57,7 +57,7 @@ class _VistaInicialState extends State<VistaInicial>
     Colors.purple,
     Colors.orange,
     Colors.deepPurple,
-    Color.fromARGB(255, 99, 8, 8),
+    Color.fromARGB(255, 3, 0, 153),
     Colors.green,
     Colors.brown,
   ];
@@ -120,7 +120,7 @@ class _VistaInicialState extends State<VistaInicial>
                 color: _isDarkMode ? Colors.white : Colors.black,
                 borderRadius: BorderRadius.circular(50),
                 border: Border.all(
-                  color: _isDarkMode ? Colors.white : Colors.black,
+                  color: _isDarkMode ? Colors.black : Colors.white,
                   width: 1,
                 ),
               ),
@@ -253,11 +253,14 @@ class _VistaInicialState extends State<VistaInicial>
                                             ? Colors.black
                                             : Colors.white),
                                     style: ElevatedButton.styleFrom(
+                                        foregroundColor: _isDarkMode
+                                            ? Colors.black
+                                            : Colors.white,
                                         shape: CircleBorder(),
                                         minimumSize: Size(120, 120),
                                         backgroundColor: _isDarkMode
-                                            ? Colors.white
-                                            : Colors.black)),
+                                            ? Color.fromARGB(255, 219, 217, 217)
+                                            : Colors.grey[800])),
                               ),
                             ),
                           ],

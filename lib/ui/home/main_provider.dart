@@ -80,6 +80,10 @@ class _MainProviderState extends State<MainProvider> {
     }
   }
 
+  void obtenerDineroGestionado(double dinero) {
+    this.consultaDinero[0]['dineroInicial'] = dinero;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeChanger>(context);
@@ -232,6 +236,7 @@ class _MainProviderState extends State<MainProvider> {
                               : {},
                           gastos:
                               consultaGastos.isNotEmpty ? consultaGastos : [],
+                          dineroGestionado: obtenerDineroGestionado,
                         ),
                       ],
                     ),

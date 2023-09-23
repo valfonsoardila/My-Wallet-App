@@ -1,7 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:my_wallet_app/domain/controller/controllerDineroUser.dart';
+import 'package:my_wallet_app/domain/controller/controllerGastosUser.dart';
 import 'package:my_wallet_app/domain/controller/controllerPerfilUser.dart';
 import 'package:my_wallet_app/domain/controller/controllerUserFirebase.dart';
 import 'package:my_wallet_app/ui/models/theme_model.dart';
@@ -19,14 +21,16 @@ class NavegationScreen extends StatefulWidget {
   final dinero;
   final mapDinero;
   final gastos;
-  NavegationScreen(
-      {Key? key,
-      required this.uid,
-      required this.foto,
-      this.dinero,
-      this.mapDinero,
-      this.gastos})
-      : super(key: key);
+  final dineroGestionado;
+  NavegationScreen({
+    Key? key,
+    required this.uid,
+    required this.foto,
+    this.dinero,
+    this.mapDinero,
+    this.gastos,
+    this.dineroGestionado,
+  }) : super(key: key);
   @override
   State<NavegationScreen> createState() => _NavegationScreenState();
 }
@@ -37,6 +41,7 @@ class _NavegationScreenState extends State<NavegationScreen> {
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   //CONTROLADORES
   ControlDineroUser controldu = ControlDineroUser();
+  ControlGastoUser controlgu = ControlGastoUser();
   ControlUserAuth controlua = Get.find();
   ControlUserPerfil controlPerfil = ControlUserPerfil();
   late TextEditingController _montoInicialController;
@@ -57,6 +62,10 @@ class _NavegationScreenState extends State<NavegationScreen> {
   //LISTAS
   List<int> _selectedIndexList = [0, 1, 2, 3];
   bool _isDarkMode = false;
+  //Callback para retornar el producto seleccionado
+  retornoProducto() {
+    widget.dineroGestionado(montoactual);
+  }
 
   void obtenerConceptoSeleccionado(String concepto) {
     this.concepto = concepto;
@@ -70,9 +79,16 @@ class _NavegationScreenState extends State<NavegationScreen> {
           if (controldu.datosDinero == true)
             {
               setState(() {
-                montoactual = '0';
+                montoactual = 0;
               })
             }
+        });
+  }
+
+  void eliminarGastos() {
+    controlgu.eliminarGastos(uid).then((value) => {
+          widget.gastos.clear(),
+          montoactual = 0,
         });
   }
 
@@ -195,7 +211,7 @@ class _NavegationScreenState extends State<NavegationScreen> {
                         ),
                         child: Row(
                           children: [
-                            montoactual != '0'
+                            montoactual != 0
                                 ? Container(
                                     width: MediaQuery.of(context).size.width *
                                         0.634,
@@ -216,7 +232,12 @@ class _NavegationScreenState extends State<NavegationScreen> {
                                         ),
                                         IconButton(
                                           onPressed: () {
-                                            eliminarMontoActual();
+                                            var mensaje =
+                                                "¿Quieres eliminar el dinero inicial? se eliminaran todos los gastos asociados a este dinero";
+                                            showCupertinoDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    _buildAlertDialog(mensaje));
                                           },
                                           icon: Icon(Icons.delete,
                                               color: Colors.white),
@@ -306,7 +327,7 @@ class _NavegationScreenState extends State<NavegationScreen> {
                             ),
                           ),
                           SizedBox(width: 10),
-                          montoactual != '0'
+                          montoactual != 0
                               ? ElevatedButton(
                                   onPressed: () {
                                     var dinero = <String, dynamic>{
@@ -344,11 +365,6 @@ class _NavegationScreenState extends State<NavegationScreen> {
                                                   })
                                                 }
                                             });
-
-                                    // setState(() {
-                                    //   montoInicial = double.parse(
-                                    //       _montoInicialController.text);
-                                    // });
                                   },
                                   style: ElevatedButton.styleFrom(
                                     fixedSize: Size(120, 50),
@@ -517,6 +533,25 @@ class _NavegationScreenState extends State<NavegationScreen> {
             color: _isDarkMode ? Colors.black : Colors.white,
             child: _widgetOptions[_page],
           )),
+    );
+  }
+
+  Widget _buildAlertDialog(mensaje) {
+    return CupertinoAlertDialog(
+      title: Text('Alerta'),
+      content: Text('$mensaje'),
+      actions: <Widget>[
+        TextButton(
+            child: const Text(
+              "Aceptar",
+              style: TextStyle(color: Colors.green),
+            ),
+            onPressed: () {
+              eliminarMontoActual();
+              eliminarGastos();
+              Navigator.of(context).pop();
+            }),
+      ],
     );
   }
 }

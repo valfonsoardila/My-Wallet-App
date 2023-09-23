@@ -34,6 +34,10 @@ class _VistaGraficaState extends State<VistaGrafica> {
   double ahorros = 0;
   double inversiones = 0;
   double otroConcepto = 0;
+  double porcentajeGastos = 0;
+  double porcentajeAhorros = 0;
+  double porcentajeInversiones = 0;
+  double porcentajeOtroConcepto = 0;
   var uid;
   //LISTA DE CONSEJOS
   final List<String> consejos = [
@@ -74,21 +78,20 @@ class _VistaGraficaState extends State<VistaGrafica> {
   void obtenerInversiones() {
     if (widget.gastos.isNotEmpty) {
       print("No esta vacio inversiones");
-      List<Map<String, dynamic>> gastosConsultados = widget.gastos;
-      for (int i = 0; i < gastosConsultados.length; i++) {
-        if (gastosConsultados[i]['concepto'] == "Negocios") {
-          inversiones += gastosConsultados[i]['expense'];
+      gastosList = widget.gastos;
+      print("Gastos consultados inver: $gastosList");
+      for (int i = 0; i < gastosList.length; i++) {
+        if (gastosList[i]['concepto'] == "Negocios") {
+          inversiones += gastosList[i]['expense'];
         } else {
-          if (gastosConsultados[i]['concepto'] == "Educación") {
-            inversiones += gastosConsultados[i]['expense'];
+          if (gastosList[i]['concepto'] == "Educación") {
+            inversiones += gastosList[i]['expense'];
           } else {
-            if (gastosConsultados[i]['concepto'] == "Salud") {
-              inversiones += gastosConsultados[i]['expense'];
+            if (gastosList[i]['concepto'] == "Salud") {
+              inversiones += gastosList[i]['expense'];
             } else {
-              if (gastosConsultados[i]['concepto'] == "Vivienda") {
-                inversiones += gastosConsultados[i]['expense'];
-              } else {
-                inversiones = 0;
+              if (gastosList[i]['concepto'] == "Vivienda") {
+                inversiones += gastosList[i]['expense'];
               }
             }
           }
@@ -113,16 +116,37 @@ class _VistaGraficaState extends State<VistaGrafica> {
     }
   }
 
-  void calcularPorcentajes() {}
+  void calcularPorcentajes() {
+    print("Dinero en calcular: $dinero");
+    if (dinero > 0) {
+      porcentajeGastos = ((gastos * 100) / dinero);
+      porcentajeAhorros = (ahorros * 100) / dinero;
+      porcentajeInversiones = (inversiones * 100) / dinero;
+      porcentajeOtroConcepto = (otroConcepto * 100) / dinero;
+      print("Porcentaje Gastos: $porcentajeGastos");
+      data = [
+        _ChartData('Gastos', porcentajeGastos),
+        _ChartData('Ahorros', porcentajeAhorros),
+        _ChartData('Inversiones', porcentajeInversiones),
+        _ChartData('Otros', porcentajeOtroConcepto),
+      ];
+    } else {
+      porcentajeGastos = 0;
+      porcentajeAhorros = 0;
+      porcentajeInversiones = 0;
+      porcentajeOtroConcepto = 0;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     uid = widget.uid;
     data = [
-      _ChartData('Gastos', 30),
-      _ChartData('Ahorros', 20),
-      _ChartData('Inversiones', 10),
-      _ChartData('Otros', 40),
+      _ChartData('Gastos', 0),
+      _ChartData('Ahorros', 0),
+      _ChartData('Inversiones', 0),
+      _ChartData('Otros', 0),
     ];
     _tooltip = TooltipBehavior(enable: true);
     controldu.obtenerDinero(uid).then((value) => {
@@ -135,6 +159,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                   obtenerAhorros();
                   obtenerInversiones();
                   obtenerOtroConcepto();
+                  calcularPorcentajes();
                 }
               })
             }
@@ -180,10 +205,21 @@ class _VistaGraficaState extends State<VistaGrafica> {
                       ],
                       tooltipBehavior: _tooltip,
                       legend: Legend(
+                        title: LegendTitle(
+                          text: 'Indices',
+                          textStyle: TextStyle(
+                            color: _isDarkMode ? Colors.black : Colors.white,
+                            fontSize: fontSize,
+                          ),
+                        ),
+                        shouldAlwaysShowScrollbar: true,
+                        position: LegendPosition.bottom,
+                        isResponsive: true,
                         isVisible: true,
                         overflowMode: LegendItemOverflowMode.wrap,
                         textStyle: TextStyle(
                           color: _isDarkMode ? Colors.black : Colors.white,
+                          fontSize: 15,
                         ),
                       ),
                       selectionGesture: ActivationMode.singleTap,
@@ -225,7 +261,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Column(
                 //Indices de grafica
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -246,6 +282,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                               style: TextStyle(
                                 color:
                                     _isDarkMode ? Colors.black : Colors.white,
+                                fontSize: 17,
                               ),
                             ),
                           ],
@@ -263,6 +300,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                         "\$$gastos",
                         style: TextStyle(
                           color: _isDarkMode ? Colors.black : Colors.white,
+                          fontSize: 17,
                         ),
                       ),
                     ],
@@ -286,6 +324,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                               style: TextStyle(
                                 color:
                                     _isDarkMode ? Colors.black : Colors.white,
+                                fontSize: 17,
                               ),
                             ),
                           ],
@@ -303,6 +342,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                         "\$$ahorros",
                         style: TextStyle(
                           color: _isDarkMode ? Colors.black : Colors.white,
+                          fontSize: 17,
                         ),
                       ),
                     ],
@@ -326,6 +366,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                               style: TextStyle(
                                 color:
                                     _isDarkMode ? Colors.black : Colors.white,
+                                fontSize: 17,
                               ),
                             ),
                           ],
@@ -343,6 +384,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                         '\$$inversiones',
                         style: TextStyle(
                           color: _isDarkMode ? Colors.black : Colors.white,
+                          fontSize: 17,
                         ),
                       ),
                     ],
@@ -366,6 +408,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                               style: TextStyle(
                                 color:
                                     _isDarkMode ? Colors.black : Colors.white,
+                                fontSize: 17,
                               ),
                             ),
                           ],
@@ -383,6 +426,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                         '\$$otroConcepto',
                         style: TextStyle(
                           color: _isDarkMode ? Colors.black : Colors.white,
+                          fontSize: 17,
                         ),
                       ),
                     ],
@@ -392,7 +436,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Container(
                   decoration: BoxDecoration(
                     color: _isDarkMode ? Colors.grey[200] : Colors.grey[900],
@@ -417,7 +461,7 @@ class _VistaGraficaState extends State<VistaGrafica> {
                         ),
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                               consejos[index],
                               style: TextStyle(

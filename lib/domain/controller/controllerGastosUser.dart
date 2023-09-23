@@ -6,9 +6,8 @@ class ControlGastoUser extends GetxController {
   final _response = Rxn();
   final _Datos = Rxn();
   final _mensaje = "".obs;
-  final Rxn<UserCredential> _perfil = Rxn<UserCredential>();
 
-  Future<void> agregarGastos(Map<String, dynamic> gastosPorFecha) async {
+  Future<void> agregarGastos(gastosPorFecha) async {
     try {
       _response.value = await Peticiones.creargasto(gastosPorFecha);
       await controlGastos(_response.value);
@@ -19,7 +18,7 @@ class ControlGastoUser extends GetxController {
     }
   }
 
-  Future<void> obtenerGastos(String uid) async {
+  Future<void> obtenerGastos(uid) async {
     try {
       _Datos.value = await Peticiones.obtenergastos(uid);
       await controlGastos(_Datos.value);
@@ -30,28 +29,21 @@ class ControlGastoUser extends GetxController {
     }
   }
 
-  Future<void> actualizarGasto(
-      String id, double expense, String fecha, String hora) async {
-    try {
-      _response.value =
-          await Peticiones.actualizarGasto(id, expense, fecha, hora);
-      await controlGastos(_response.value);
-    } catch (error) {
-      print('Error en la operación de registro: $error');
-      await Future.delayed(Duration(seconds: 2)); // Esperar 2 segundos
-      await controlGastos(_response.value); // Reintentar el registro
-    }
+  Future<void> actualizarGasto(id, expense, fecha, hora) async {
+    _response.value =
+        await Peticiones.actualizarGasto(id, expense, fecha, hora);
+    await controlGastos(_response.value);
   }
 
   Future<void> eliminarGasto(String id) async {
-    try {
-      _response.value = await Peticiones.eliminarGasto(id);
-      await controlGastos(_response.value);
-    } catch (error) {
-      print('Error en la operación de registro: $error');
-      await Future.delayed(Duration(seconds: 2)); // Esperar 2 segundos
-      await controlGastos(_response.value); // Reintentar el registro
-    }
+    _response.value = await Peticiones.eliminarGasto(id);
+    await controlGastos(_response.value);
+  }
+
+  Future<void> eliminarGastos(uid) async {
+    print("entro");
+    _response.value = await Peticiones.eliminarGastos(uid);
+    await controlGastos(_response.value);
   }
 
   Future<void> controlGastos(dynamic respuesta) async {
